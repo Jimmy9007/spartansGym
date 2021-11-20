@@ -1,0 +1,151 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<?php
+if ($sesionUsuario = $this->identity()) {
+    $nombreUsuario = $this->escapeHtml($sesionUsuario->nombreApellido);
+}
+$usuario = $this->usuario;
+$title = 'Medias de ' . $nombreUsuario;
+$this->headTitle($title);
+
+$scriptGraficoMedidas = "
+           $(function () {
+    $('#graficoBarras').highcharts({
+        title: {
+            text: 'Medidas',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'POPGYM',
+            x: -20
+        },
+        xAxis: {
+            categories: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['fechaMedias'] . ",";
+}
+$scriptGraficoMedidas .= "]
+        },
+        yAxis: {
+            title: {
+                text: 'Centimetros (cm)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: 'cm'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Peso',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPESO() . ",";
+}
+$scriptGraficoMedidas .= "]
+        }, {
+            name: 'Hombro',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getHOMBRO() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Pecho',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPECHO() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Biceps',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getBICEPS() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },
+        {
+            name: 'Antebrazo',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getANTEBRAZO() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Cintura',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getCINTURA() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Cadera',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getCADERA() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Pirena A',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPIERNA() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Pirena B',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPiernaB() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: 'Pantorrilla',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPANTORRILLA() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },{
+            name: '%GC',
+            data: [";
+foreach ($this->medidas as $medida) {
+    $scriptGraficoMedidas .= "" . $medida['medidasOBJ']->getPorGrasa() . ",";
+}
+$scriptGraficoMedidas .= "]
+        },
+        ]
+    });
+});
+        ";
+$this->headScript()->appendScript($scriptGraficoMedidas);
+?>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-bar-chart-o fa-fw"></i> Medidas De:<small><?php echo $nombreUsuario; ?></small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>                  
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div id="graficoBarras"></div>
+            </div>
+        </div>
+    </div>
+</div>

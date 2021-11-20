@@ -1,0 +1,314 @@
+<?php
+$title = 'Rutinas ';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath('vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/iCheck/skins/flat/green.css'));
+
+$this->headScript()->prependScript('$(document).ready(function() {'
+                . '$("#tblRutinass").DataTable({'
+                . 'responsive: true,'
+                . '"iDisplayLength": 25,
+                    "sPaginationType": "full_numbers",
+                    "oLanguage": {
+                        "sLengthMenu": "Mostrar: _MENU_ registros por pagina",
+                        "sZeroRecords": "NO SE HA ENCONTRADO INFORMACION",
+                        "sInfo": "Mostrando <b>_START_</b> a <b>_END_</b> registros <br>TOTAL REGISTROS: <b>_TOTAL_</b> Registros</b>",
+                        "sInfoEmpty": "Mostrando 0 A 0 registros",
+                        "sInfoFiltered": "(Filtrados de un total de <b>_MAX_</b> registros)",
+                        "sLoadingRecords": "CARGANDO...",
+                        "sProcessing": "EN PROCESO...",
+                        "sSearch": "Buscar:",
+                        "sEmptyTable": "NO HAY INFORMACION DISPONIBLE PARA LA TABLA",
+                        "oPaginate": {
+                            "sFirst": "Inicio",
+                            "sLast": "Fin",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        }
+                    },
+                    "aaSorting": [[0, "asc"]]'
+                . '});'
+                . '});'
+                , 'text/javascript'
+                , array('noescape' => true))
+        ->prependFile($this->basePath('js/sistema/rutinas.js'))
+        ->prependFile('/public/vendors/iCheck/icheck.min.js')
+        ->prependFile('/public/vendors/datatables.net-scroller/js/dataTables.scroller.min.js')
+        ->prependFile('/public/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')
+        ->prependFile('/public/vendors/datatables.net-responsive/js/dataTables.responsive.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')
+        ->prependFile('/public/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/buttons.html5.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/buttons.print.min.js')
+        ->prependFile('/public/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')
+        ->prependFile('/public/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')
+        ->prependFile('/public/vendors/pdfmake/build/pdfmake.min.js')
+        ->prependFile('/public/vendors/pdfmake/build/vfs_fonts.js')
+        ->prependFile('/public/vendors/datatables.net/js/jquery.dataTables.min.js');
+$formRutinas = $this->form;
+?>
+<div class="page-title">
+    <div class="title_left">
+        <h3><i class="fa fa-file-text"></i> Rutinas <small>ANEXAR EJERCICIOS</small></h3>
+    </div>
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">IR!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row" style="min-height: 1000px">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Anexar Ejercicios <small>RUTINAS</small></h2>
+                <?php
+                $tipoUsuario = '';
+                $hiddenCliente = '';
+                if ($sesionUsuario = $this->identity()) {
+                    $tipoUsuario = $this->escapeHtml($sesionUsuario->fk_rol_id);
+                    if ($tipoUsuario == '2') {
+                        $hiddenCliente = 'hidden';
+                    } else {
+                        $hiddenCliente = '';
+                    }
+                }
+                ?>
+                <fieldset <?php echo $hiddenCliente; ?>>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>    
+                            <button type="button" onclick="seleccionarEjercicios(<?php echo $formRutinas->get('pk_rutina_id')->getValue(); ?>)" class="btn btn-success"><i class="fa fa-plus"></i> Anexar Ejercicio</button>
+                        </li>
+                    </ul>
+                </fieldset>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br>
+                <p class="text-muted font-13 m-b-30">
+                    A continuacion se listan todas las ejercicios anexadas a esta rutina.
+                </p>
+                <table id="tblRutinass" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Zona Muscular</th>
+                            <th title="Los números representa los días de la semana.">Dias</th>
+                            <th>Repeticiones</th>
+                            <th>Orden</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($this->ejercicios as $ejercicio) {
+                            echo '<tr>';
+                            echo '<td>' . $ejercicio['ejercicioOBJ']->getPk_ejercicio_id() . '</td>';
+                            echo '<td>' . $ejercicio['ejercicioOBJ']->getNOM_EJER() . '</td>';
+                            echo '<td>' . $ejercicio['ejercicioOBJ']->getZonaMuscular() . '</td>';
+                            echo '<td>' . $ejercicio['rutinasEjerciciosOBJ']->getDIAS() . '</td>';
+                            echo '<td>' . $ejercicio['rutinasEjerciciosOBJ']->getREPETICION() . '</td>';
+                            echo '<td>' . $ejercicio['rutinasEjerciciosOBJ']->getOrdenEjercicio() . '</td>';
+                            echo '<td>';
+                            echo '<a href="" onclick="detalleEjercicio(' . $ejercicio['ejercicioOBJ']->getPk_ejercicio_id() . '); return false;" title="Ver este ejercicio a detalle"><i class="fa fa-eye"></i></a>';
+                            echo '&nbsp;&nbsp;';
+                            echo '&nbsp;&nbsp;';
+                            echo '&nbsp;&nbsp;';
+                            echo '<a href="" onclick="eliminarEjercicio(' . $ejercicio['ejercicioOBJ']->getPk_ejercicio_id() . '); return false;" title="Quitar ejercicio de esta rutina"' . $hiddenCliente . '><i class="fa fa-times"></i></a>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <div class="ln_solid"></div>
+                <?php
+                $formRutinas->prepare();
+                echo $this->form()->openTag($formRutinas);
+                ?>
+                <fieldset>
+                    <legend>Informacion De La Rutinas</legend>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_rutina_id">ID Rutina <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?php echo $this->formRow($formRutinas->get('pk_rutina_id')); ?>
+                        </div>
+                    </div>                   
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">ID Uusario <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <?php echo $this->formRow($formRutinas->get('fk_usuario_id')); ?>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset <?php echo $hiddenCliente; ?>>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <?php
+                            echo '<a href="' . $this->url('administracion/default', array('controller' => 'rutinas', 'action' => 'index')) . '"  class="btn btn-danger"> Cerrar</a>' . ' ';
+                            echo $this->form()->closeTag()
+                            ?>
+
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAnexarEjercicios" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Seleccionar Ejercicio</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 10px" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content" id="divAnexarEjercicios"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <b>PopGym &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSetEjercicio" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Informacion del Ejercicio</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 10px" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content" id="divSetEjercicio">
+                                    <form class="form-horizontal form-label-left" action="<?php echo $this->url('administracion/default', array('controller' => 'rutinas', 'action' => 'setEjerciciosRutinas')) ?>" method="POST" onsubmit="return validarAnexarEjercicio()">
+                                        <fieldset>            
+                                            <!-- Start to do list -->                                               
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>POPGYM <small>Informacion del ejercicios en la rutina</small></h2>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+
+                                                    <div class="">
+                                                        <ul class="to_do">
+                                                            <li>
+                                                                <input type="checkbox" id="chkLunes" name="dias[]" value="Lun">
+                                                                <label class="control-label" for="chkLunes">Lunes</label>
+                                                            </li>
+                                                            <li>
+                                                                <input type="checkbox" id="chkMartes" name="dias[]" value="Mar">
+                                                                <label class="control-label" for="chkMartes">Martes</label>
+                                                            </li>
+                                                            <li>
+                                                                <input type="checkbox" id="chkMiercoles" name="dias[]" value="Mie">
+                                                                <label class="control-label" for="chkMiercoles">Miércoles</label>
+
+                                                            </li>
+                                                            <li>
+                                                                <input type="checkbox" id="chkJueves" name="dias[]" value="Jue">
+                                                                <label class="control-label" for="chkJueves">Jueves</label>
+                                                            </li>
+                                                            <li>
+                                                                <input type="checkbox" id="chkViernes" name="dias[]" value="Vie">
+                                                                <label class="control-label" for="chkViernes">Viernes</label>
+                                                            </li>
+                                                            <li>                                                                    
+                                                                <input type="checkbox" id="chkSabado" name="dias[]" value="Sab">
+                                                                <label class="control-label" for="chkSabado">Sábado</label>
+                                                            </li>
+                                                            <li>                                                                    
+                                                                <input type="checkbox" id="chkDomingo" name="dias[]" value="Dom">
+                                                                <label class="control-label" for="chkDomingo">Domingo</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>               
+                                            <!-- End to do list -->
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="repeticion">Intensidad <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="repeticion" id="repeticion" required> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="orden">Orden <span class="required">*</span></label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input type="text" class="form-control" name="orden" id="orden" required> 
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <div class="ln_solid"></div>
+                                        <div class="form-group">
+                                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                <button class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                                                <input type="submit" class="btn btn-success" value="Guardar">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="idRutinaSelect" name="idRutinaSelect">
+                                        <input type="hidden" id="idEjercicioSelect" name="idEjercicioSelect">
+                                    </form>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <b>PopGym &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="dlgDetalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <img src="/public/img/logo.png" style="width: 8%" alt="Gimnasio"/>
+                <h4 class="modal-title">POPGYM</h4>
+            </div>
+            <div class="modal-body" >
+                <div id="divDetalle" class="row"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+            <div class="modal-footer">
+                <b>POPGYM &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>

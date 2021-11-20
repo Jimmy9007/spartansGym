@@ -1,0 +1,213 @@
+<button type="button" onclick="init_charts()" id="btn" class="btn btn-info" title="Grafica"><i class="fa fa-pie-chart"></i></button>
+<div class="col-md-12 col-sm-12  ">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Medidas corporales<small>Grafica</small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</div>
+<script>
+    function init_charts() {
+        var ctx = document.getElementById("lineChart");
+        var lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['fechaMedias'] . ',';
+}
+?>],
+                datasets: [{
+                        label: "Peso",
+                        backgroundColor: "rgba(38, 185, 154, 0.31)",
+                        borderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBorderColor: "rgba(38, 185, 154, 0.7)",
+                        pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PESO'] . ',';
+}
+?>]
+                    }, {
+                        label: "Pecho",
+                        backgroundColor: "rgba(3, 88, 106, 0.3)",
+                        borderColor: "rgba(3, 88, 106, 0.70)",
+                        pointBorderColor: "rgba(3, 88, 106, 0.70)",
+                        pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PECHO'] . ',';
+}
+?>]
+                    }, {
+                        label: "Hombro",
+                        backgroundColor: "rgba(255, 54, 36, 0.3)",
+                        borderColor: "rgba(255, 54, 36, 0.70)",
+                        pointBorderColor: "rgba(255, 54, 36, 0.70)",
+                        pointBackgroundColor: "rgba(255, 54, 36, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['HOMBRO'] . ',';
+}
+?>]
+                    }, {
+                        label: "Biceps",
+                        backgroundColor: "rgba(255, 244, 36, 0.3)",
+                        borderColor: "rgba(255, 244, 36, 0.70)",
+                        pointBorderColor: "rgba(255, 244, 36, 0.70)",
+                        pointBackgroundColor: "rgba(255, 244, 36, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['BICEPS'] . ',';
+}
+?>]
+                    }, {
+                        label: "Antebrazo",
+                        backgroundColor: "rgba(255, 36, 182, 0.3)",
+                        borderColor: "rgba(255, 36, 182, 0.70)",
+                        pointBorderColor: "rgba(255, 36, 182, 0.70)",
+                        pointBackgroundColor: "rgba(255, 36, 182, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['ANTEBRAZO'] . ',';
+}
+?>]
+                    }, {
+                        label: "Cintura",
+                        backgroundColor: "rgba(156, 36, 255, 0.3)",
+                        borderColor: "rgba(156, 36, 255, 0.70)",
+                        pointBorderColor: "rgba(156, 36, 255, 0.70)",
+                        pointBackgroundColor: "rgba(156, 36, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['CINTURA'] . ',';
+}
+?>]
+                    }, {
+                        label: "Cadera",
+                        backgroundColor: "rgba(0, 194, 6, 0.3)",
+                        borderColor: "rgba(0, 194, 6, 0.70)",
+                        pointBorderColor: "rgba(0, 194, 6, 0.70)",
+                        pointBackgroundColor: "rgba(0, 194, 6, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['CADERA'] . ',';
+}
+?>]
+                    }, {
+                        label: "Pierna A",
+                        backgroundColor: "rgba(16, 0, 194, 0.3)",
+                        borderColor: "rgba(16, 0, 194, 0.70)",
+                        pointBorderColor: "rgba(16, 0, 194, 0.70)",
+                        pointBackgroundColor: "rgba(16, 0, 194, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PIERNA'] . ',';
+}
+?>]
+                    }, {
+                        label: "Pierna B",
+                        backgroundColor: "rgba(255, 109, 36, 0.3)",
+                        borderColor: "rgba(255, 109, 36, 0.70)",
+                        pointBorderColor: "rgba(255, 109, 36, 0.70)",
+                        pointBackgroundColor: "rgba(255, 109, 36, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['piernaB'] . ',';
+}
+?>]
+                    }, {
+                        label: "Pantorrilla",
+                        backgroundColor: "rgba(36, 226, 255, 0.3)",
+                        borderColor: "rgba(36, 226, 255, 0.70)",
+                        pointBorderColor: "rgba(36, 226, 255, 0.70)",
+                        pointBackgroundColor: "rgba(36, 226, 255, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PANTORRILLA'] . ',';
+}
+?>]
+                    }, {
+                        label: "%GC",
+                        backgroundColor: "rgba(255, 36, 94, 0.3)",
+                        borderColor: "rgba(255, 36, 94, 0.70)",
+                        pointBorderColor: "rgba(255, 36, 94, 0.70)",
+                        pointBackgroundColor: "rgba(255, 36, 94, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['porGrasa'] . ',';
+}
+?>]
+                    }, {
+                        label: "Peso grasa",
+                        backgroundColor: "rgba(156, 255, 36, 0.3)",
+                        borderColor: "rgba(156, 255, 36, 0.70)",
+                        pointBorderColor: "rgba(156, 255, 36, 0.70)",
+                        pointBackgroundColor: "rgba(156, 255, 36, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PGK'] . ',';
+}
+?>]
+                    }, {
+                        label: "Peso magro",
+                        backgroundColor: "rgba(219, 0, 0, 0.3)",
+                        borderColor: "rgba(219, 0, 0, 0.70)",
+                        pointBorderColor: "rgba(219, 0, 0, 0.70)",
+                        pointBackgroundColor: "rgba(219, 0, 0, 0.70)",
+                        pointHoverBackgroundColor: "#fff",
+                        pointHoverBorderColor: "rgba(151,187,205,1)",
+                        pointBorderWidth: 1,
+                        data: [<?php
+foreach ($this->usuario as $meddas) {
+    echo $meddas['PMK'] . ',';
+}
+?>]
+                    }]
+            },
+        });
+
+    }
+</script>
+<!-- Chart.js -->
+<script src="<?php echo $this->basePath('/public/vendors/Chart.js/dist/Chart.min.js'); ?>"></script>

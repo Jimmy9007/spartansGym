@@ -1,0 +1,50 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+?>
+<fieldset>
+    <fieldset>
+        <div class="form-group">
+            <a id="selectUsu" class="btn btn-primary" onclick="seleccionarUsuario()"><span class="fa fa-search"></span> Buscar Usuario</a>
+            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <?php
+                echo $this->formRow($form->get('btnCancelar'));
+                if ($action != 'detail') {
+                    echo $this->formSubmit($form->get('btnEnviar'));
+                }
+                ?>
+            </div>
+        </div>
+        <div id="divInfoUsuario" hidden></div>
+
+    </fieldset>
+</fieldset>
+<fieldset <?php echo $hiddenInfoRegistro; ?>>
+    <legend>Informacion de Registro</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_asistencia_id">ID</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('pk_asistencia_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">fk_usuario_id <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('fk_usuario_id')); ?>
+        </div>
+    </div>
+    <legend>Informacion de la asistencia</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="FECHA_ASIS">FECHA_ASIS <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('FECHA_ASIS')); ?>
+        </div>
+    </div>
+</fieldset>
+<?php echo $this->form()->closeTag(); ?>

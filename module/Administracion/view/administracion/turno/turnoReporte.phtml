@@ -1,0 +1,95 @@
+Popayán, Cauca, <?php echo date('l, d/M/Y'); ?><br><br><br>
+<h1 align="center">CUENTA DE COBRO</h1>
+<p>Turnos trabajados del empleado
+    <?php
+    foreach ($this->reporteTurno as $turno) {
+        echo '<b>' . $turno['usuarioOBJ']->getNombreApellido() . '</b>';
+        break 1;
+    }
+    ?>
+    con numero de documento: 
+    <?php
+    foreach ($this->reporteTurno as $turno) {
+        echo '<b>' . $turno['clienteempleadoOBJ']->getIdentificacion() . '</b>';
+        break 1;
+    }
+    ?>
+    del gimnasio PopGym hasta la fecha
+</p>
+<table id="tblTurnos">
+    <thead>
+        <tr>
+            <td class="tdTitulo">ID</td>
+            <td class="tdTitulo">EMPLEADO</td>
+            <td class="tdTitulo">V/H</td>
+            <td class="tdTitulo">H/E</td>
+            <td class="tdTitulo">H/S</td>
+            <td class="tdTitulo">H/T</td>
+            <td class="tdTitulo">P/T</td>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($this->reporteTurno as $turno) {
+            echo '<tr>';
+            echo '<td>' . $turno['turnoOBJ']->getPk_turno_id() . '</td>';
+            echo '<td>' . $turno['usuarioOBJ']->getNombreApellido() . '</td>';
+            echo '<td>$ ' . number_format($turno['turnoOBJ']->getValorHora()) . '</td>';
+            echo '<td>' . date('j-F-Y h:i A', strtotime($turno['turnoOBJ']->getFechaInicio())) . '</td>';
+            echo '<td>' . date('j-F-Y h:i A', strtotime($turno['turnoOBJ']->getFechaFinal())) . '</td>';
+            echo '<td>' . date('i:s', $turno['turnoOBJ']->getHorasTurno()) . '</td>';
+            echo '<td>$ ' . number_format($turno['turnoOBJ']->getPagoTotal()) . '</td>';
+            echo '</tr>';
+        }
+        ?>
+    </tbody>
+    <tfoot>
+    <td style="visibility:collapse"></td>
+    <td style="visibility:collapse"></td>
+    <td style="visibility:collapse"></td>
+    <td style="visibility:collapse"></td>
+    <td style="visibility:collapse"></td>
+    <th style="background: #FFA">Total:</th>
+        <?php
+        $total = 0;
+        foreach ($this->reporteTurno as $suma) {
+            $total += $suma['turnoOBJ']->getPagoTotal();
+        }
+        echo '<th style="background: #FFA">$ ' . number_format($total) . '</th>';
+        ?>
+</tfoot>
+</table>
+<br><br><br><br><br>
+Autoriza,
+<br><br><br><br>
+<br><br><br><br>
+<br><br><br><br>
+<img src="public/img/iconos/firma.png" alt="Firma Representante Legal" height="100" width="100">
+<br>
+____________________________
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+____________________________
+<br>
+<b>Jimmy Andrés Núñez Astudillo</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+<?php
+foreach ($this->reporteTurno as $turno) {
+    echo '<b>' . $turno['usuarioOBJ']->getNombreApellido() . '</b>';
+    break 1;
+}
+?>
+<br>
+Representante legal 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;
+Empleado
+<br>
+<b>POPGYM SOFTWARE E INGENIERIA S.A.S.</b> <br>

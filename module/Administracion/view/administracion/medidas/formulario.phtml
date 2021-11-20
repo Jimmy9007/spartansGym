@@ -1,0 +1,270 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+?>
+<fieldset>
+    <legend>Informacion de las Medidas</legend>
+    <div class="form-group">
+        <a class="btn btn-primary" onclick="seleccionarUsuario()"><span class="fa fa-search"></span> Buscar Usuario</a>
+    </div>
+
+    <div id="divInfoUsuario" hidden></div>
+
+</fieldset>
+<fieldset>
+    <legend>Informacion de las medidas</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ESTATURA">ESTATURA <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('ESTATURA')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Met</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PESO">PESO <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PESO')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Kg</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PECHO">PECHO <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PECHO')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="BICEPS">BICEPS <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('BICEPS')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="HOMBRO">HOMBRO<span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('HOMBRO')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ANTEBRAZO">ANTEBRAZO</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('ANTEBRAZO')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CINTURA">CINTURA</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('CINTURA')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="CADERA">CADERA</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('CADERA')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PIERNA">PIERNA A</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PIERNA')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="piernaB">PIERNA B</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('piernaB')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PANTORRILLA">PANTORRILLA</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PANTORRILLA')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Cm</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="IMC">IMC</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('IMC')); ?>
+            <span class="fa fa-dashboard form-control-feedback right" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="ponerPliegues">Calcular IGC</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('ponerPliegues')); ?>
+        </div>
+    </div>
+    <div class="form-group" id="divTricipital" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tricipital">TRICIPITAL</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('tricipital')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divSubescapular" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="subescapular">SUBESCAPULAR</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('subescapular')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divSupraliaco" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supraliaco">SUPRAILIACO</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('supraliaco')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divPlieAbdominal" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="plieAbdominal">Pliegue ABDOMINAL</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('plieAbdominal')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divCuadrcipital" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cuadricipital">CUADRCIPITAL</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('cuadricipital')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divPeroneal" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0 || $form->get('ponerPliegues')->getValue() == 2) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="peroneal">PERONEAL</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('peroneal')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">mm</span>
+        </div>
+    </div>
+    <div class="form-group" id="divPorGrasa" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="porGrasa">%GC</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('porGrasa')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">%GC</span>
+        </div>
+    </div>
+    <div class="form-group" id="divPGC" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PGC">Estado de %GC</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PGC')); ?>
+            <span class="fa fa-dashboard form-control-feedback right" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="form-group" id="divPGK" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PGK">%GC en Kilogramos</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PGK')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Kg</span>
+        </div>
+    </div>
+    <div class="form-group" id="divPMK" 
+    <?php
+    if ($form->get('ponerPliegues')->getValue() == 0) {
+        echo 'hidden';
+    }
+    ?>>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="PMK">Peso Magro en Kilogramos</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('PMK')); ?>
+            <span class="form-control-feedback right" aria-hidden="true">Kg</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="FECHA_MED_USU">Facha</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('FECHA_MED_USU')); ?>
+        </div>
+    </div>
+
+</fieldset>
+<fieldset <?php echo $hiddenInfoRegistro; ?>>
+    <legend>Informacion de Registro</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_medida_id">ID Medidas</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('pk_medida_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">ID Usuario</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('fk_usuario_id')); ?>
+        </div>
+    </div>
+
+
+</fieldset>
+
+<div class="ln_solid"></div>
+<div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <?php
+        echo $this->formRow($form->get('btnCancelar'));
+        if ($action != 'detail') {
+            echo $this->formSubmit($form->get('btnEnviar'));
+        }
+        ?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag(); ?>

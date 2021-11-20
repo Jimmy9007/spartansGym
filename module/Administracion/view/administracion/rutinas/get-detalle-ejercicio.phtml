@@ -1,0 +1,48 @@
+<style>
+    /*aca va el estilo de detalle*/
+
+    .tblDetalles{
+        background: #DDD;
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    .tblDetalles td {
+        padding: 0px 10px;
+        border-bottom: 1px solid #FFF;
+    }
+
+    .detalleLabel {
+        font-weight: bold;
+        width: 30%;
+    }
+
+    .detalleTitulo {
+        font-weight: bold;
+        background: #333;
+        color: #EEE;
+        letter-spacing: 2px;
+        height: 30px;
+    }
+</style>
+<div id="divTxtDetalle">
+    <table class="tblDetalles">
+        <?php
+        $ejercicio = $this->ejercicio;
+        echo
+        '<tr>' .
+        '<td class="detalleTitulo"><center>DATOS DEL EJERCICIO</center></td>' .
+        '<td class="detalleTitulo" style="text-align: right"> ID: ' . $ejercicio->getPk_ejercicio_id() . '</td>' .
+        '</tr>' .
+        '<tr>' .
+        '<td class="detalleLabel">DETALLE </td>' .
+        '<td>' . $ejercicio->getDESC_EJER() . '</td>' .
+        '</tr>' .
+        '<tr>' .
+        '<td class="detalleLabel">IMAGEN </td>' .
+        '<td> <img src="/public/img/ejercicios/' . $ejercicio->getRUTA_IMG_EJER() . '" width="250" height="250"></td>' .
+        '</tr>'
+        ;
+        ?>
+    </table>
+</div>

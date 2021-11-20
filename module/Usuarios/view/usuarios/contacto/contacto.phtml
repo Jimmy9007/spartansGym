@@ -1,0 +1,103 @@
+<br><br><br>
+<!-- page content -->
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_content">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                    <ul class="pagination pagination-split">
+                        <li><a href="#">A</a></li>
+                        <li><a href="#">B</a></li>
+                        <li><a href="#">C</a></li>
+                        <li><a href="#">D</a></li>
+                        <li><a href="#">E</a></li>
+                        <li>...</li>
+                        <li><a href="#">W</a></li>
+                        <li><a href="#">X</a></li>
+                        <li><a href="#">Y</a></li>
+                        <li><a href="#">Z</a></li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+                <!--perfil-->
+                <?php
+                foreach ($this->usuarios as $usuario) {
+                    echo '<div class="col-md-4 col-sm-4 col-xs-12 profile_details">';
+                    echo '<div class="well profile_view">';
+                    echo '<div class = "col-sm-12">';
+                    echo '<h4 class = "brief"><i>ID: ' . $usuario['usuarioOBJ']->getPk_usuario_id() . '</i></h4>';
+                    echo '<div class = "left col-xs-7">';
+                    echo '<h2>' . $usuario['usuarioOBJ']->getNombreApellido() . '</h2 > ';
+//                    echo '<p><strong>Ocupacion: </strong>' . $usuario->getOcupacion() . ' </p>';
+                    echo '<ul class = "list-unstyled">';
+                    echo '</ul>
+                                </div>
+                                <div class = "right col-xs-5 text-center">';
+                    echo '<img src = "/public/img/profile/' . $usuario['usuarioOBJ']->getRutaFotoPerfil() . '" alt = "" class = "img-circle img-responsive">';
+                    echo '</div>
+                                </div>
+
+                                <div class = "col-xs-12 bottom text-center">
+                                <div class = "col-xs-12 col-sm-6 emphasis">
+                                <p class = "ratings">
+                                <a>4.0</a>
+                                <a href = "#"><span class = "fa fa-star"></span></a>
+                                <a href = "#"><span class = "fa fa-star"></span></a>
+                                <a href = "#"><span class = "fa fa-star"></span></a>
+                                <a href = "#"><span class = "fa fa-star"></span></a>
+                                <a href = "#"><span class = "fa fa-star-o"></span></a>
+                                </p>
+                                </div>
+                                <div class = "col-xs-12 col-sm-6 emphasis">
+                                <button id="compose" type = "button" class = "btn btn-success btn-xs" title="Enviar Mensaje"> <i class = "fa fa-user" onclick="init_compose(' . $usuario['usuarioOBJ']->getPk_usuario_id() . ')">
+                                </i> <i class = "fa fa-comments-o"></i> </button>
+                                <button type = "button" class = "btn btn-primary btn-xs">
+                                <i class = "fa fa-user"> </i> View Profile
+                                </button>
+                                </div>
+                                </div>
+                                </div>
+                                </div>';
+                }
+                ?>
+                <!--/perfil-->
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- /page content -->
+<!-- footer content -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="pull-right">
+
+        <div class="flex">
+            <ul class="list-inline ">               
+                <li>
+                    <a title="Facebook" href="https://www.facebook.com/">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </li>                
+                <li>
+                    <a title="Twitter" href="https://twitter.com/?lang=es">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a title="Instagram" href="https://www.instagram.com/?hl=es-la">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                </li>
+                <li>
+                    <h4><span class="label label-primary">POPGYM</span></h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<!-- /footer content -->
+

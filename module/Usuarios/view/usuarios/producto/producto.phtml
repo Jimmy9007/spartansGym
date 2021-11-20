@@ -1,0 +1,108 @@
+<br><br><br>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Productos PopGym</h3>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                            <ul class="pagination pagination-split">
+                                <li><a href="#">A</a></li>
+                                <li><a href="#">B</a></li>
+                                <li><a href="#">C</a></li>
+                                <li><a href="#">D</a></li>
+                                <li><a href="#">E</a></li>
+                                <li>...</li>
+                                <li><a href="#">W</a></li>
+                                <li><a href="#">X</a></li>
+                                <li><a href="#">Y</a></li>
+                                <li><a href="#">Z</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <?php
+                        foreach ($this->producto as $producto) {//producto viene del metodo indexAction ProductoController                           
+                            echo '<div class="col-md-4 col-sm-4 col-xs-12 profile_details">';
+                            echo '<div class="well profile_view">';
+                            echo '<div class="col-sm-12">';
+                            echo '<div class="left col-xs-7">';
+                            echo '<h2>' . $producto->getNombreProducto() . '</h2>';
+                            echo '<p><strong>Detalle: </strong>' . $producto->getDescripcion() . '</p>';
+                            echo '<ul class="list-unstyled">';
+                            echo '<li><i class="fa fa-dollar"></i>' . $producto->getPrecioVenta() . '</li>';
+                            echo '</ul>';
+                            echo '</div>';
+                            echo '<div class="right col-xs-5 text-center">';
+                            echo '<img src="/public/img/productos/' . $producto->getImagenProducto() . '" alt="" class="img-circle img-responsive">';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '<div class="col-xs-12 bottom text-center">';
+                            echo '<div class="col-xs-12 col-sm-6 emphasis">';
+                            echo '<p class="ratings">';
+                            echo '<a>4.0</a>';
+                            echo '<a href="#"><span class="fa fa-star"></span></a>';
+                            echo '<a href="#"><span class="fa fa-star"></span></a>';
+                            echo '<a href="#"><span class="fa fa-star"></span></a>';
+                            echo '<a href="#"><span class="fa fa-star"></span></a>';
+                            echo '<a href="#"><span class="fa fa-star-o"></span></a>';
+                            echo '</p>';
+                            echo '</div>';
+                            echo '<div class="col-xs-12 col-sm-6 emphasis">';
+                            echo '<a href="https://tienda.blessedmusic.co" class="btn btn-success btn-xs""><i class="fa fa-shopping-cart"></i> Agregar al carro</a>';
+                            echo '<a href="' . $this->url('login/default', array('controller' => 'productodetalle', 'action' => 'productodetalle', 'id1' => $producto->getPk_producto_id())) . '" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i>Ver Producto</a>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                        ?>                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+<!-- footer content -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="pull-right">
+
+        <div class="flex">
+            <ul class="list-inline ">               
+                <li>
+                    <a title="Facebook" href="https://www.facebook.com/">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </li>                
+                <li>
+                    <a title="Twitter" href="https://twitter.com/?lang=es">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a title="Instagram" href="https://www.instagram.com/?hl=es-la">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                </li>
+                <li>
+                    <h4><span class="label label-primary">POPGYM</span></h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<!-- /footer content -->

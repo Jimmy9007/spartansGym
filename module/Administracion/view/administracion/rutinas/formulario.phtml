@@ -1,0 +1,77 @@
+<?php
+$formRutinas = $this->form;
+$formRutinas->prepare();
+$hiddenConfiguracion = 'hidden';
+$hiddenInfoRegistro = '';
+$action = $formRutinas->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+if ($action == 'configuracion') {
+    $hiddenConfiguracion = '';
+}
+echo $this->form()->openTag($formRutinas);
+?>
+<fieldset <?php echo $hiddenConfiguracion; ?>>
+    <legend>Configuracion</legend>
+    <div class="form-group">
+        <button onclick="anexarEjercicios(<?php echo $formRutinas->get('pk_rutina_id')->getValue(); ?>)" class="btn btn-primary"><i class="fa fa-question"></i> Anexar Ejercicio</button>
+    </div>    
+    <div class="ln_solid"></div>
+</fieldset>
+<fieldset>
+    <legend>Informacion del Rutinas</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="DESCRIP_RUTINA">Detalle Rutina</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($formRutinas->get('DESCRIP_RUTINA')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <a id="selectUsu" class="btn btn-primary" onclick="seleccionarUsuario()"><span class="fa fa-search"></span> Buscar Usuario</a>
+    </div>
+    <div id="divInfoUsuario" hidden></div>
+
+</fieldset>
+<fieldset <?php echo $hiddenInfoRegistro; ?>>
+    <legend>Informacion de Registro</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_rutina_id">ID Rutina</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($formRutinas->get('pk_rutina_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">ID Usuario</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($formRutinas->get('fk_usuario_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fechaRutina">Fecha</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($formRutinas->get('fechaRutina')); ?>
+        </div>
+    </div>
+</fieldset>
+<div class="ln_solid"></div>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="rutinaAutomaticamente"><i class="fa fa-refresh fa-spin"></i> Rutina Automaticamente: </label>
+    <div class="checkbox col-md-6 col-sm-6 col-xs-12">
+        &nbsp;&nbsp;&nbsp; <input type="checkbox" value="1" name="rutinaAutomaticamente" id="rutinaAutomaticamente" onclick="setRutinaAutomaticamente()">
+    </div>
+    <input type="hidden" name="fk_rutina_id_auto" id="fk_rutina_id_auto" value="<?php echo $form->get('pk_rutina_id')->getValue(); ?>">
+    <input type="hidden" name="DESCRIP_RUTINA_old" id="DESCRIP_RUTINA_old" value="<?php echo $form->get('DESCRIP_RUTINA')->getValue(); ?>">
+</div>
+<div class="ln_solid"></div>
+<div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <?php
+        echo $this->formRow($formRutinas->get('btnCancelar'));
+        if ($action != 'detail' && $action != 'configuracion') {
+            echo $this->formSubmit($formRutinas->get('btnEnviar'));
+        }
+        ?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag(); ?>

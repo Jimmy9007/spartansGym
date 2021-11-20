@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+    <head>
+        <title>REPORTE TURNOS</title>
+        <meta charset="utf-8">
+        <style>
+            @page {
+                margin: 0.5cm 2cm;
+            }
+            body {
+                font-family: sans-serif;
+                margin: 90px 0;
+                text-align: justify;
+                color: #000;
+            }
+            #header, #footer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                color: #555;
+                font-size: 0.9em;
+            }
+            #header {
+                top: 0;
+                height: 82px;
+                border-bottom: 0.1pt solid #555;
+            }
+            #footer {
+                bottom: 0;
+                height: 70px;
+                border-top: 0.1pt solid #555;
+                text-align: right;
+                font-size: 12px;
+            }
+            .logo {
+                width: 110px;
+            }
+            #header span {
+                margin-left: 340px;
+                color: #555;
+            }                
+            #header hr {
+                color: #FFF;
+                margin-top: -10px;
+            }
+            #footer hr {
+                color: #FFF;
+            }
+            .fechaContrato u {
+                color: #777;
+                border-bottom: 1px solid #333;
+            }
+            #footer span {
+                letter-spacing: 2px;
+                margin-right: -10px;
+            }
+            #content {
+                font-size: 12px;
+            }
+            .fechaImpresion {
+                color: #777;
+                font-size: 10px;
+                text-align: right;
+                font-style: italic;
+            }
+            table {
+                border-spacing: 0.5px;
+            }
+            td, th {
+                padding: 3px 5px;
+                border: 1px solid #000;
+                font-size: 12px;
+            }
+            .tdTitulo{
+                background: #555;
+                letter-spacing: 2px;
+                color: #FFF;
+                font-weight: bold;
+                text-align: center;
+            }
+            .tdCampo{
+                background: #DDD;
+                font-weight: bold;
+            }
+            .tblPuntos {
+                width: 100%;
+                margin: 0px auto;
+            }
+            .tblPuntos td, th{
+                text-align: center;
+            }
+            .fontMini {
+                font-size: 9px;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="text/php">
+            $footer = $pdf->open_object();
+            $w = $pdf->get_width();
+            $h = $pdf->get_height();
+            $colorAux = array(0, 0, 0);
+            $y = $h - 2 * 1 - 30;
+            $size = 11;
+            $pdf->page_text($w - 125, $y - 10, "Pagina {PAGE_NUM} de {PAGE_COUNT}", '', $size, $colorAux);
+            $pdf->close_object();
+            $pdf->add_object($footer, "all");
+        </script>
+        <div id="header">
+            <img class="logo" src="public/img/logo.png">
+            <span>NIT: 000000000-0</span>
+        </div>
+        <div id="footer">
+            <span>POPGYM</span><br>
+            Carrera 20A # 2-14 Barrio Pandiguando Popayan Cauca 8366328
+        </div>
+        <div id="content">
+            {turnosPDF}
+        </div>
+    </body>
+</html>

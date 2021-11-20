@@ -1,0 +1,39 @@
+<p class="text-muted font-13 m-b-30">
+    A continuacion se listan todas las ejercicioss registradas en el sistema que no han sido anexadas al actual cuestionario.
+</p><br>
+<div style="overflow: scroll">
+    <table id="tblInstructores" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOMBRES</th>
+                <th>APELLIDOS</th>
+                <th>IDENTIFICACION</th>
+                <!--<th>FECHA_NAC_INST</th>-->
+                <th>CORREO_INST</th>
+                <th>TEL_INST</th>
+                <!--<th>SEXO_INST</th>-->
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($this->instructores as $instructor) {
+                echo '<tr>';
+                echo '<td>' . $instructor->getPk_instructor_id() . '</td>';
+                echo '<td>' . $instructor->getNOM_INST() . '</td>';
+                echo '<td>' . $instructor->getAPELL_INST() . '</td>';
+                echo '<td>' . $instructor->getIDENTIFICACION() . '</td>';
+//            echo '<td>' . $instructor->getFECHA_NAC_INST() . '</td>';
+                echo '<td>' . $instructor->getCORREO_INST() . '</td>';
+                echo '<td>' . $instructor->getTEL_INST() . '</td>';
+//            echo '<td>' . $instructor->getSEXO_INST() . '</td>';
+                echo '<td>';
+                echo '<a href="" onclick="selectInstructor(' . $instructor->getPk_instructor_id() . '); return false;" title="Seleccionar este Instructor"><i class="fa fa-check"></i></a>';
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+</div>

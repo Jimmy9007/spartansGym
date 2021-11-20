@@ -1,0 +1,107 @@
+<?php
+$form = $this->formLogin;
+$form->prepare();
+$form->setAttribute('action', $this->url('login/default', array('controller' => 'login', 'action' => 'login')));
+echo $this->form()->openTag($form);
+?>
+<a class="hiddenanchor" id="signup"></a>
+<a class="hiddenanchor" id="signin"></a>
+
+<div class="login_wrapper">
+    <div class="animate form login_form">
+        <section class="login_content">
+
+             <h1 style="color:#EDCB0A">Formulario de inicio de sesión</h1>
+            <div class="form-group has-feedback">
+                <input style="background-color: #EDCB0A" type="text" name="login" class="form-control" placeholder="Usuario" required>
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input style="background-color: #EDCB0A" type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                <span style="position: absolute;right:15px;top:10px;" onclick="hideshow()" >
+                    <i id="slash" class="fa fa-eye-slash"></i>
+                    <i id="eye" class="fa fa-eye"></i>
+                </span>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-primary submit" value="Iniciar Sesion" onclick="validarUsuario()">
+                <a style="color:#EDCB0A" class="reset_pass" href="#">¿Has olvidado la cuenta?</a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+                <p style="color:#EDCB0A" class="change_link">¿Nuevo en el sitio?
+                    <a href="#signup" class="to_register"><span class="label label-success">Crear una cuenta</span></a>
+                </p>
+                <div class="clearfix"></div>
+                <div>
+                    <img src="/gimnasio/public/img/favicon.ico" style="width: 20%" alt="SPARTANS"/>
+                    <h1 style="color:#EDCB0A">SPARTANS</h1>
+                    <p style="color:#EDCB0A">&copy;2021 Todos los derechos reservados.</p>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <div id="register" class="animate form registration_form">
+        <section class="login_content">
+
+            <h1 style="color:#EDCB0A">Crear una cuenta</h1>
+            <div class="form-group has-feedback">
+                <input style="background-color: #EDCB0A" type="text" class="form-control" placeholder="Usuario">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input style="background-color: #EDCB0A" type="email" class="form-control" placeholder="Email">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input style="background-color: #EDCB0A" type="password" class="form-control" placeholder="Contraseña">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div>
+                <a class="btn btn-primary submit" href="index.html">Enviar</a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="separator">
+                <p style="color:#EDCB0A" class="change_link">¿ Ya eres usuario ?
+                    <a href="#signin" class="to_register"><span class="label label-success">Iniciar sesión</span></a>
+
+                </p>
+
+                <div class="clearfix"></div>
+                <div>
+                    <img src="/gimnasio/public/img/favicon.ico" style="width: 20%" alt="SPARTANS"/>
+                     <h1 style="color:#EDCB0A">SPARTANS</h1>
+                    <p style="color:#EDCB0A">&copy;2021 Todos los derechos reservados.</p>
+                </div>
+            </div>
+
+        </section>
+    </div>
+</div>
+<?php echo $this->formElement($form->get('security')) ?>
+<?php echo $this->form()->closeTag() ?>
+<!-- Javascript functions	-->
+<script>
+    eye.style.display = "none";
+    function hideshow() {
+        var password = document.getElementById("password");
+        var slash = document.getElementById("slash");
+        var eye = document.getElementById("eye");
+
+        if (password.type === 'password') {
+            password.type = "text";
+            slash.style.display = "block";
+            eye.style.display = "none";
+        } else {
+            password.type = "password";
+            slash.style.display = "none";
+            eye.style.display = "block";
+        }
+    }
+</script>

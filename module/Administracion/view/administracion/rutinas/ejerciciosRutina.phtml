@@ -1,0 +1,24 @@
+<?php
+
+//
+
+foreach ($this->ejerciciosRutina as $ejercicio) {
+    echo '<tr>';
+    echo '<td><h6>' . $ejercicio['ejercicioOBJ']->getNOM_EJER() . '</h6></td>';
+    echo '<td><h6>' . $ejercicio['rutinasEjerciciosOBJ']->getDIAS() . '</h6></td>';
+    echo '<td><h6>' . $ejercicio['rutinasEjerciciosOBJ']->getREPETICION() . '</h6></td>';
+    echo '<td><h6>' . $ejercicio['ejercicioOBJ']->getDESC_EJER() . '</h6></td>';
+    echo '<td> <img src="public/img/ejercicios/' . $ejercicio['ejercicioOBJ']->getRUTA_IMG_EJER() . '" width="50" height="50"> </td>';
+    echo '</tr>';
+}
+
+//foreach ($this->ejerciciosRutina as $ejercicio) {
+//    echo '<div>';
+//    echo '<div>' . $ejercicio['rutinasEjerciciosOBJ']->getDIAS() . '</div>';
+//    echo '<div>' . $ejercicio['ejercicioOBJ']->getDESC_EJER() . '</div>';
+//    echo '<div>' . $ejercicio['rutinasEjerciciosOBJ']->getREPETICION() . '</div>';
+//    echo '<div> <img src="/public/img/ejercicios/' . $ejercicio['ejercicioOBJ']->getRUTA_IMG_EJER() . '" width="50" height="50"> </div>';
+//    echo '</div> <br>';
+//}
+?>
+

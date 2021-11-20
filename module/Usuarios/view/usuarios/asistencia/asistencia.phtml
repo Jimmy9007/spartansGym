@@ -1,0 +1,96 @@
+<head>
+    <script src = "/public/js/sistema/asistencia.js"></script>
+</head>
+<br><br><br>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>ASISTENCIAS <small>Usuarios POPGYM</small></h3>
+            </div>
+
+            <ul class="nav navbar-right panel_toolbox">
+                <li>    
+                    <button type="button" onclick="verAgregarAsistencia()" class="btn btn-success"><i class="fa fa-plus"></i> Registrar Asistencia</button>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">                    
+                    <div class="x_content">    
+                        <p class="text-muted font-13 m-b-30">
+                            A continuacion se listan todos los asistencias registrados en el sistema.
+                        </p>
+                        <table id="tblAsistencias" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Fecha y Hora</th>
+                                    <th>Dias Faltantes</th>                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                foreach ($this->asistencias as $asistencia) {
+                                    $estilo = "";
+                                    if ($asistencia['diasPreaviso'] >= 4) {
+                                        $estilo = 'style="background: #AFA"';
+                                    } elseif ($asistencia['diasPreaviso'] <= 3 && $asistencia['diasPreaviso'] >= 0) {
+                                        $estilo = 'style="background: #FFA"';
+                                    } elseif ($asistencia['diasPreaviso'] < 0) {
+                                        $estilo = 'style="background: #FAA"';
+                                    }
+                                    echo '<tr>';
+                                    echo '<td>' . $asistencia['asistenciaOBJ']->getPk_asistencia_id() . '</td>';
+                                    echo '<td>' . $asistencia['usuarioOBJ']->getNombreApellido() . '</td>';
+                                    echo '<td>' . $asistencia['asistenciaOBJ']->getFECHA_ASIS() . '</td>';
+                                    echo '<td ' . $estilo . '>' . $asistencia['diasPreaviso'] . '</td>';
+                                    echo '</tr>';
+                                }
+                                ?>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<div class="modal fade" id="modalFormulario" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Formulario</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 10px" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content" id="divContenido"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <b>POPGYM &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="msgBloqueo" style="display: none;"> 
+    SU SOLICITUD ESTA SIENDO PROCESADA, POR FAVOR ESPERE <i class="fa fa-spinner fa-spin fa-lg"></i>
+</div>
+
+
+
+
+
+

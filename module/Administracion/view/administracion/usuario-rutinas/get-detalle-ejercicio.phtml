@@ -1,0 +1,28 @@
+<div id="divTxtDetalle">
+    <table class="tblDetalles">
+        <?php
+        $ejercicio = $this->ejercicio;
+
+        $this->headLink()->prependStylesheet($this->basePath('/public/css/dataTables.bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('/public/css/buttons.bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('/public/css/responsive.bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('/public/css/scroller.bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('/public/css/green.css'));
+
+        echo
+        '<tr>' .
+        '<td class="detalleTitulo"><center>DATOS DEL EJERCICIO</center></td>' .
+        '<td class="detalleTitulo" style="text-align: right"> ID: ' . $ejercicio->getPk_ejercicio_id() . '</td>' .
+        '</tr>' .
+        '<tr>' .
+        '<td class="detalleLabel">DETALLE </td>' .
+        '<td>' . $ejercicio->getDESC_EJER() . '</td>' .
+        '</tr>' .
+        '<tr>' .
+        '<td class="detalleLabel">IMAGEN </td>' .
+        '<td> <img src="/gimnasio/public/img/ejercicios/' . $ejercicio->getRUTA_IMG_EJER() . '" width="250" height="250"></td>' .
+        '</tr>'
+        ;
+        ?>
+    </table>
+</div>

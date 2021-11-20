@@ -1,0 +1,136 @@
+<?php
+$title = 'Estadisticas';
+$this->headTitle($title);
+$this->headScript()
+        ->prependFile('/public/js/sistema/reportes.js')
+        ->prependFile('/public/js/highcharts.js')
+        ->prependFile('/public/js/modules/exporting.js');
+?>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-bar-chart fa-2x"></i> &nbsp; Mensualidad VS Ventas <small>ANUAL</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="selectAnio"></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id="selectAnio" class="form-control" onchange="ponerAnio();">
+                            <option value="">Seleccione..</option>
+                            <?php
+                            for ($i = 0; $i <= 10; $i++) {
+                                $anios = date('Y') - $i;
+                                if ($anios == $this->anio) {
+                                    echo '<option value="' . $anios . '" selected>' . $anios . '</option>';
+                                } else {
+                                    echo '<option value="' . $anios . '">' . $anios . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="ln_solid"></div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <canvas id="ventasChart"></canvas>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">       
+                        <div class="x_content1">
+                            <div id="ventasMoris" style="width:100%; height:280px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".right_col").attr('style', 'height: 1000px;');
+    $('#ventasMoris').length;
+
+    $(document).ready(function () {
+//-----------Chart--------------------------------------------------------------        
+        var ctx = document.getElementById("ventasChart");
+        var mybarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                datasets: [{
+                        label: 'Mensualidades',
+                        backgroundColor: "#26B99A",
+                        data: [<?php echo $this->mensualidadenero . ',' . $this->mensualidadfebrero . ',' . $this->mensualidadmarzo . ',' . $this->mensualidadabril . ',' . $this->mensualidadmayo . ',' . $this->mensualidadjunio . ',' . $this->mensualidadjulio . ',' . $this->mensualidadagosto . ',' . $this->mensualidadseptiembre . ',' . $this->mensualidadoctubre . ',' . $this->mensualidadnoviembre . ',' . $this->mensualidaddiciembre; ?>]
+                    }, {
+                        label: 'Ventas',
+                        backgroundColor: "#03586A",
+                        data: [<?php echo $this->ventasenero . ',' . $this->ventasfebrero . ',' . $this->ventasmarzo . ',' . $this->ventasabril . ',' . $this->ventasmayo . ',' . $this->ventasjunio . ',' . $this->ventasjulio . ',' . $this->ventasagosto . ',' . $this->ventasseptiembre . ',' . $this->ventasoctubre . ',' . $this->ventasnoviembre . ',' . $this->ventasdiciembre; ?>]
+                    }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
+        });
+//-----------------Moris-------------------------------------------------------
+        Morris.Bar({
+            element: 'ventasMoris',
+            data: [
+                {"period": "Enero", "mensualidad": <?php echo $this->mensualidadenero + 0 ?>, "ventas": <?php echo $this->ventasenero + 0 ?>},
+                {"period": "Febrero", "mensualidad": <?php echo $this->mensualidadfebrero + 0 ?>, "ventas": <?php echo $this->ventasfebrero + 0 ?>},
+                {"period": "Marzo", "mensualidad": <?php echo $this->mensualidadmarzo + 0 ?>, "ventas": <?php echo $this->ventasmarzo + 0 ?>},
+                {"period": "Abril", "mensualidad": <?php echo $this->mensualidadabril + 0 ?>, "ventas": <?php echo $this->ventasabril + 0 ?>},
+                {"period": "Mayo", "mensualidad": <?php echo $this->mensualidadmayo + 0 ?>, "ventas": <?php echo $this->ventasmayo + 0 ?>},
+                {"period": "Junio", "mensualidad": <?php echo $this->mensualidadjunio + 0 ?>, "ventas": <?php echo $this->ventasjunio + 0 ?>},
+                {"period": "Julio", "mensualidad": <?php echo $this->mensualidadjulio + 0 ?>, "ventas": <?php echo $this->ventasjulio + 0 ?>},
+                {"period": "Agosto", "mensualidad": <?php echo $this->mensualidadagosto + 0 ?>, "ventas": <?php echo $this->ventasagosto + 0 ?>},
+                {"period": "Septiembre", "mensualidad": <?php echo $this->mensualidadseptiembre + 0 ?>, "ventas": <?php echo $this->ventasseptiembre + 0 ?>},
+                {"period": "Octubre", "mensualidad": <?php echo $this->mensualidadoctubre + 0 ?>, "ventas": <?php echo $this->ventasoctubre + 0 ?>},
+                {"period": "Noviembre", "mensualidad": <?php echo $this->mensualidadnoviembre + 0 ?>, "ventas": <?php echo $this->ventasnoviembre + 0 ?>},
+                {"period": "Diciembre", "mensualidad": <?php echo $this->mensualidaddiciembre + 0 ?>, "ventas": <?php echo $this->ventasdiciembre + 0 ?>}
+            ],
+            xkey: 'period',
+            barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
+            ykeys: ['mensualidad', 'ventas'],
+            labels: ['Mensualidad', 'Ventas'],
+            hideHover: 'auto',
+            xLabelAngle: 60,
+            resize: true
+        });
+    });
+</script>
+<!-- morris.js -->
+<script src="/public/vendors/raphael/raphael.min.js"></script>
+<script src="/public/vendors/morris.js/morris.min.js"></script>
+<!-- Chart.js -->
+<script src="/public/vendors/Chart.js/dist/Chart.min.js"></script>
+<!-- jQuery Sparklines -->
+<script src="/public/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- Flot -->
+<script src="/public/vendors/Flot/jquery.flot.js"></script>
+<script src="/public/vendors/Flot/jquery.flot.pie.js"></script>
+<script src="/public/vendors/Flot/jquery.flot.time.js"></script>
+<script src="/public/vendors/Flot/jquery.flot.stack.js"></script>
+<script src="/public/vendors/Flot/jquery.flot.resize.js"></script>
+<!-- Flot plugins -->
+<script src="/public/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="/public/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src="/public/vendors/flot.curvedlines/curvedLines.js"></script>
+<!-- DateJS -->
+<script src="/public/vendors/DateJS/build/date.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="/public/vendors/moment/min/moment.min.js"></script>
+<script src="/public/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+

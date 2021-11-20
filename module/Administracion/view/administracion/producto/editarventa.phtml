@@ -1,0 +1,104 @@
+<?php
+$form = $this->form;
+$producto = $this->producto;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'buscar') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <div id="divInfoProducto" hidden></div>
+    <body class="nav-md">
+        <div class="container body">
+            <div class="row">
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel fixed_height_320">
+                        <div class="x_content">
+
+                            <div class="flex">
+                                <ul class="list-inline widget_profile_box">
+
+                                    <li>
+                                        <img id="foto" src="/public/img/productos/<?php
+                                        echo $producto->getImagenProducto();
+                                        ?>" alt="..." class="img-circle profile_img">
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <h3 id="nombreProducto" class="name"><?php
+                                echo $producto->getNombreProducto();
+                                ?></h3>      
+                            <div class="flex">
+                                <ul class="list-inline count2">
+                                    <li>
+                                        <h3 id="precioU">$ <?php
+                                            echo number_format($producto->getPrecioVenta());
+                                            ?></h3>
+                                        <span>PRECIO U. L.</span>
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                    <li>
+                                        <h3 id="cantidadT"><?php
+                                            echo $producto->getCantidad();
+                                            ?></h3>
+                                        <span>EXIS.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animated flipInY col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel fixed_height_320">
+                        <div class="x_content">
+                            <legend>Informacion del producto</legend>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_producto_id">ID: </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <?php echo $this->formRow($form->get('pk_producto_id')); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="precioVenta">Precio: <span class="required"></span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <?php echo $this->formRow($form->get('precioVenta')); ?>
+                                </div>
+                            </div>  
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cantidadVenta">Cantidad: <span class="required"></span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <?php echo $this->formRow($form->get('cantidadVenta')); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="valorTotal">Total: <span class="required"></span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <?php echo $this->formRow($form->get('valorTotal')); ?>
+                                </div>
+                            </div>           
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="animated flipInY col-lg-12 col-md-12 col-sm-6 col-xs-12">
+                    <button class="btn btn-danger" data-dismiss="modal">Cerrar</button>                    
+                    <input type="submit" class="btn btn-success" value="Guardar">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+

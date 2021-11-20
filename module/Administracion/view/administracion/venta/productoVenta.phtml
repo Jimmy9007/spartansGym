@@ -1,0 +1,38 @@
+<h1>FACTURA DE VENTA</h1>
+<table border="1" cellpadding="2" cellspacing="2">
+    <thead>
+        <tr style="background-color:#AAA;color:#FFFF00;">
+            <td width="140" align="center"><b>IMAGEN</b></td>
+            <td width="140" align="center"><b>NOMBRE</b></td>
+            <td width="70" align="center"><b>CANTIDAD</b></td>
+            <td width="140" align="center"><b>PRECIO</b></td>
+            <td width="140" align="center"><b>TOTAL</b></td>
+
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($this->productoVenta as $venta) {
+            echo '<tr>';
+            echo '<td width="140" align="center"> <img src="./public/img/productos/' . $venta['productoOBJ']->getImagenProducto() . '" width="50" height="50"> </td>';
+            echo '<td width="140" align="center">' . $venta['productoOBJ']->getNombreProducto() . '</td>';
+            echo '<td width="70" align="center">' . $venta['productoVentaOBJ']->getCantidadVenta() . '</td>';
+            echo '<td width="140" align="center">' . number_format($venta['productoOBJ']->getPrecioVenta()) . '</td>';
+            echo '<td width="140" align="center">' . number_format($venta['productoVentaOBJ']->getMonto()) . '</td>';
+            echo '</tr>';
+        }
+        ?>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" style=" border: inset 0pt"></td>                    
+            <?php
+            $total = 0;
+            foreach ($this->productoVenta as $suma) {
+                $total += $suma['productoVentaOBJ']->getMonto();
+            }
+            echo '<td width="140" align="center" style="background-color:#FFFF00;color:#0000FF;"><b>$ ' . number_format($total) . '</b></td>';
+            ?>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,66 @@
+<?php
+
+namespace Usuarios\Formularios;
+
+use Zend\Form\Element;
+use Zend\Form\Form;
+
+class Login extends Form {
+
+    public function __construct($nonmbre = null) {
+        parent::__construct($nonmbre);
+        $this->setAttribute('method', 'post');
+        $this->add(array(
+            'name' => 'login',
+            'options' => array(
+                'label' => '',
+            ),
+            'type' => 'Text',
+            'attributes' => array(
+                'class' => 'form-control',
+                'placeholder' => 'Usuario',
+                'autofocus' => 'true', 
+                'required' => 'true',
+                'autocomplete' => 'off',
+                'value' => '',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'password',
+            'options' => array(
+                'label' => '',
+            ),
+            'type' => 'Password',
+            'attributes' => array(
+                'class' => 'form-control',
+                'placeholder' => 'Clave',
+                'required' => 'true',
+                'autocomplete' => 'off',
+                'value' => '',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'recordar',
+            'type' => 'Checkbox',
+            'options' => array(
+                'label' => 'Mantener la sesion iniciada',
+                'use_hidden_element' => false,
+                'checked_value' => 'si',
+                'unchecked_value' => 'no'
+            ),
+//            'attributes' => array(
+//                'value' => 'no'
+//            ),
+        ));
+        $this->add(new Element\Csrf('security'));
+        $this->add(array(
+            'name' => 'btnIniciarSesion',
+            'type' => 'Submit',
+            'attributes' => array(
+                'value' => 'Iniciar Sesion',
+                'class' => 'btn btn-default'
+            ),
+        ));
+    }
+
+}

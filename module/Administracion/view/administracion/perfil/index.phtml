@@ -1,0 +1,868 @@
+<?php
+//--------- CARGAR MENSAJES DE ALERTA ------------------------------------------
+//$formBusquedas = $this->formBusquedas;
+$flash = $this->flashMessenger();
+$notificaciones = [
+    'success' => array_merge($flash->getSuccessMessages(), $flash->getCurrentSuccessMessages()),
+    'error' => array_merge($flash->getErrorMessages(), $flash->getCurrentErrorMessages()),
+    'alert' => array_merge($flash->getMessages(), $flash->getCurrentMessages()),
+    'information' => array_merge($flash->getInfoMessages(), $flash->getCurrentInfoMessages()),
+    'warning' => array_merge($flash->getWarningMessages(), $flash->getCurrentWarningMessages()),
+];
+$flash->clearCurrentMessages('default');
+$flash->clearCurrentMessages('info');
+$flash->clearCurrentMessages('success');
+$flash->clearCurrentMessages('warning');
+$flash->clearCurrentMessages('error');
+$mostrarMensajes = '';
+foreach (array_filter($notificaciones) as $tipo => $mensajes) {
+    switch ($tipo) {
+        case 'success': $tipoAux = '[ OK ]';
+            break;
+        case 'error': $tipoAux = '[ ERROR ]';
+            break;
+        case 'alert': $tipoAux = '[ ALERTA ]';
+            break;
+        case 'information': $tipoAux = '[ INFORMACION ]';
+            break;
+        case 'warning': $tipoAux = '[ PRECAUCION ]';
+            break;
+    }
+    foreach ($mensajes as $mensaje) {
+        $mostrarMensajes .= '$.notify({
+                                    title: "<b>' . $tipoAux . ' -- </b>",
+                                    message: "<span style=\'font-size: 90%\'>' . $mensaje . '</span>"
+                                },{
+                                    type: "' . $tipo . '"
+                                });';
+    }
+}
+//------------------------------------------------------------------------------
+if ($sesionUsuario = $this->identity()) {
+    $idUsuario = $this->escapeHtml($sesionUsuario->pk_usuario_id);
+    $idPerfil = $this->escapeHtml($sesionUsuario->fk_clienteempleado_id);
+    $nombreU = $this->escapeHtml($sesionUsuario->nombreApellido);
+    $fotoU = $this->escapeHtml($sesionUsuario->rutaFotoPerfil);
+    $sexo = $this->escapeHtml($sesionUsuario->genero);
+
+    foreach ($this->usuario as $date) {
+        $fecha = $date['clienteempleadoOBJ']->getFechaNacimiento();
+    }
+
+    $dia = date("d", strtotime($fecha));
+    $mes = date("m", strtotime($fecha));
+    if ($mes == 1) {
+        $mesNombre = "Enero";
+    } elseif ($mes == 2) {
+        $mesNombre = "Febrero";
+    } elseif ($mes == 3) {
+        $mesNombre = "Marzo";
+    } elseif ($mes == 4) {
+        $mesNombre = "Abril";
+    } elseif ($mes == 5) {
+        $mesNombre = "Mayo";
+    } elseif ($mes == 6) {
+        $mesNombre = "Junio";
+    } elseif ($mes == 7) {
+        $mesNombre = "Julio";
+    } elseif ($mes == 8) {
+        $mesNombre = "Agosto";
+    } elseif ($mes == 9) {
+        $mesNombre = "Septiembre";
+    } elseif ($mes == 10) {
+        $mesNombre = "Octubre";
+    } elseif ($mes == 11) {
+        $mesNombre = "Noviembre";
+    } else {
+        $mesNombre = "Diciembre";
+    }
+    if ($sexo == "Masculino") {
+        $iconoSex = "fa fa-male";
+    } else {
+        $iconoSex = "fa fa-female";
+    }
+}
+$title = "Perfil";
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath('vendors/animate.css/animate.min.css'))
+        ->prependStylesheet($this->basePath('vendors/iCheck/skins/flat/green.css'));
+
+$this->headScript()->prependScript('$(document).ajaxStop($.unblockUI); '
+                . '$(document).ready(function() {'
+                . '//------------------------------------------------------------------------------
+                    // MANIPULACION DEL EVENTO DE CIERRE DEL MODAL
+                    //------------------------------------------------------------------------------
+                    $("#modalFormulario").on("hide.bs.modal", function (e) {
+                        return confirm("¿ DESEAS CERRAR EL FORMULARIO ?");
+                    });'
+                . $mostrarMensajes
+                . '});'
+                , 'text/javascript'
+                , array('noescape' => true))
+        ->prependFile($this->basePath('js/sistema/perfil.js'))
+        ->prependFile($this->basePath('js/jquery.blockUI.js'))
+        ->prependFile($this->basePath('js/bootstrap-notify.min.js'))
+        ->prependFile($this->basePath('vendors/iCheck/icheck.min.js'))
+        ->prependFile($this->basePath('vendors/bootstrap-progressbar/bootstrap-progressbar.min.js'));
+?>
+<!DOCTYPE html>
+<head>
+    <style>
+        html, body {
+            background: #efefef;      
+            height:100%;
+        }
+        #center-text {          
+            display: flex;
+            flex: 1;
+            flex-direction:column;
+            justify-content: center;
+            align-items: center;
+            height:100%;
+
+        }
+        #chat-circle {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            background: #5A5EB9;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            color: white;
+            padding: 28px;
+            cursor: pointer;
+            box-shadow: 0px 3px 16px 0px rgba(0, 0, 0, 0.6), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+            z-index: 5;
+        }
+
+        .btn#my-btn {
+            background: white;
+            padding-top: 13px;
+            padding-bottom: 12px;
+            border-radius: 45px;
+            padding-right: 40px;
+            padding-left: 40px;
+            color: #5865C3;
+        }
+        #chat-overlay {
+            background: rgba(255, 255, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: none;
+        }
+
+
+        .chat-box {
+            display:none;
+            background: #efefef;
+            position:fixed;
+            right:30px;
+            bottom:50px;
+            width:350px;
+            max-width: 85vw;
+            max-height:100vh;
+            border-radius:5px;
+            /*   box-shadow: 0px 5px 35px 9px #464a92; */
+            box-shadow: 0px 5px 35px 9px #ccc;
+            z-index: 5;
+        }
+        .chat-box-toggle {
+            float:right;
+            margin-right:15px;
+            cursor:pointer;
+        }
+        .chat-box-header {
+            background: #5A5EB9;
+            height:70px;
+            border-top-left-radius:5px;
+            border-top-right-radius:5px;
+            color:white;
+            text-align:center;
+            font-size:20px;
+            padding-top:17px;
+        }
+        .chat-box-body {
+            position: relative;
+            height:370px;
+            height:auto;
+            border:1px solid #ccc;  
+            overflow: hidden;
+        }
+        .chat-box-body:after {
+            content: "";
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgOCkiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PGNpcmNsZSBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgY3g9IjE3NiIgY3k9IjEyIiByPSI0Ii8+PHBhdGggZD0iTTIwLjUuNWwyMyAxMW0tMjkgODRsLTMuNzkgMTAuMzc3TTI3LjAzNyAxMzEuNGw1Ljg5OCAyLjIwMy0zLjQ2IDUuOTQ3IDYuMDcyIDIuMzkyLTMuOTMzIDUuNzU4bTEyOC43MzMgMzUuMzdsLjY5My05LjMxNiAxMC4yOTIuMDUyLjQxNi05LjIyMiA5LjI3NC4zMzJNLjUgNDguNXM2LjEzMSA2LjQxMyA2Ljg0NyAxNC44MDVjLjcxNSA4LjM5My0yLjUyIDE0LjgwNi0yLjUyIDE0LjgwNk0xMjQuNTU1IDkwcy03LjQ0NCAwLTEzLjY3IDYuMTkyYy02LjIyNyA2LjE5Mi00LjgzOCAxMi4wMTItNC44MzggMTIuMDEybTIuMjQgNjguNjI2cy00LjAyNi05LjAyNS0xOC4xNDUtOS4wMjUtMTguMTQ1IDUuNy0xOC4xNDUgNS43IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTg1LjcxNiAzNi4xNDZsNS4yNDMtOS41MjFoMTEuMDkzbDUuNDE2IDkuNTIxLTUuNDEgOS4xODVIOTAuOTUzbC01LjIzNy05LjE4NXptNjMuOTA5IDE1LjQ3OWgxMC43NXYxMC43NWgtMTAuNzV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjcxLjUiIGN5PSI3LjUiIHI9IjEuNSIvPjxjaXJjbGUgZmlsbD0iIzAwMCIgY3g9IjE3MC41IiBjeT0iOTUuNSIgcj0iMS41Ii8+PGNpcmNsZSBmaWxsPSIjMDAwIiBjeD0iODEuNSIgY3k9IjEzNC41IiByPSIxLjUiLz48Y2lyY2xlIGZpbGw9IiMwMDAiIGN4PSIxMy41IiBjeT0iMjMuNSIgcj0iMS41Ii8+PHBhdGggZmlsbD0iIzAwMCIgZD0iTTkzIDcxaDN2M2gtM3ptMzMgODRoM3YzaC0zem0tODUgMThoM3YzaC0zeiIvPjxwYXRoIGQ9Ik0zOS4zODQgNTEuMTIybDUuNzU4LTQuNDU0IDYuNDUzIDQuMjA1LTIuMjk0IDcuMzYzaC03Ljc5bC0yLjEyNy03LjExNHpNMTMwLjE5NSA0LjAzbDEzLjgzIDUuMDYyLTEwLjA5IDcuMDQ4LTMuNzQtMTIuMTF6bS04MyA5NWwxNC44MyA1LjQyOS0xMC44MiA3LjU1Ny00LjAxLTEyLjk4N3pNNS4yMTMgMTYxLjQ5NWwxMS4zMjggMjAuODk3TDIuMjY1IDE4MGwyLjk0OC0xOC41MDV6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS13aWR0aD0iMS4yNSIvPjxwYXRoIGQ9Ik0xNDkuMDUgMTI3LjQ2OHMtLjUxIDIuMTgzLjk5NSAzLjM2NmMxLjU2IDEuMjI2IDguNjQyLTEuODk1IDMuOTY3LTcuNzg1LTIuMzY3LTIuNDc3LTYuNS0zLjIyNi05LjMzIDAtNS4yMDggNS45MzYgMCAxNy41MSAxMS42MSAxMy43MyAxMi40NTgtNi4yNTcgNS42MzMtMjEuNjU2LTUuMDczLTIyLjY1NC02LjYwMi0uNjA2LTE0LjA0MyAxLjc1Ni0xNi4xNTcgMTAuMjY4LTEuNzE4IDYuOTIgMS41ODQgMTcuMzg3IDEyLjQ1IDIwLjQ3NiAxMC44NjYgMy4wOSAxOS4zMzEtNC4zMSAxOS4zMzEtNC4zMSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjEuMjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvZz48L3N2Zz4=');
+            opacity: 0.1;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            height:100%;
+            position: absolute;
+            z-index: -1;
+        }
+        #chat-input {
+            background: #f4f7f9;
+            width:100%;
+            position:relative;
+            height:47px;
+            padding-top:10px;
+            padding-right:50px;
+            padding-bottom:10px;
+            padding-left:15px;
+            border:none;
+            resize:none;
+            outline:none;
+            border:1px solid #ccc;
+            color:#888;
+            border-top:none;
+            border-bottom-right-radius:5px;
+            border-bottom-left-radius:5px;
+            overflow:hidden;
+        }
+        .chat-input > form {
+            margin-bottom: 0;
+        }
+        #chat-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+            color: #ccc;
+        }
+        #chat-input::-moz-placeholder { /* Firefox 19+ */
+            color: #ccc;
+        }
+        #chat-input:-ms-input-placeholder { /* IE 10+ */
+            color: #ccc;
+        }
+        #chat-input:-moz-placeholder { /* Firefox 18- */
+            color: #ccc;
+        }
+        .chat-submit {
+            position:absolute;
+            bottom:3px;
+            right:10px;
+            background: transparent;
+            box-shadow:none;
+            border:none;
+            border-radius:50%;
+            color:#5A5EB9;
+            width:35px;
+            height:35px;
+        }
+        .chat-logs {
+            padding:15px;
+            height:370px;
+            overflow-y:scroll;
+        }
+
+        .chat-logs::-webkit-scrollbar-track
+        {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            background-color: #F5F5F5;
+        }
+
+        .chat-logs::-webkit-scrollbar
+        {
+            width: 5px;
+            background-color: #F5F5F5;
+        }
+
+        .chat-logs::-webkit-scrollbar-thumb
+        {
+            background-color: #5A5EB9;
+        }
+
+
+
+        @media only screen and (max-width: 500px) {
+            .chat-logs {
+                height:40vh;
+            }
+        }
+
+        .chat-msg.user > .msg-avatar img {
+            width:45px;
+            height:45px;
+            border-radius:50%;
+            float:left;
+            width:15%;
+        }
+        .chat-msg.self > .msg-avatar img {
+            width:45px;
+            height:45px;
+            border-radius:50%;
+            float:right;
+            width:15%;
+        }
+        .cm-msg-text {
+            background:white;
+            padding:10px 15px 10px 15px;
+            color:#666;
+            max-width:75%;
+            float:left;
+            margin-left:10px;
+            position:relative;
+            margin-bottom:20px;
+            border-radius:30px;
+        }
+        .chat-msg {
+            clear:both;
+        }
+        .chat-msg.self > .cm-msg-text {
+            float:right;
+            margin-right:10px;
+            background: #5A5EB9;
+            color:white;
+        }
+        .cm-msg-button>ul>li {
+            list-style:none;
+            float:left;
+            width:50%;
+        }
+        .cm-msg-button {
+            clear: both;
+            margin-bottom: 70px;
+        }
+    </style>
+    <script>
+        function showMessage(messageHTML) {
+            $('#chat-box').append(messageHTML);
+        }
+
+        $(document).ready(function () {
+            var websocket = new WebSocket("ws://192.168.0.253:8090/demo/php-socket.php");
+            websocket.onopen = function (event) {
+                showMessage("<p style='color:green;'><small>La conexión está establecida!</small></p>");
+            }
+            websocket.onmessage = function (event) {
+                var Data = JSON.parse(event.data);
+                showMessage("<div class='" + Data.message_type + "'>" + Data.message + "</div>");
+                $('#chat-input').val('');
+            };
+
+            websocket.onerror = function (event) {
+                showMessage("<p style='color:red;'><small>Problema debido a algún error</small></p>");
+            };
+            websocket.onclose = function (event) {
+                showMessage("<p style='color:red;'><small>Conexión cerrada</small></p>");
+            };
+
+            $('#frmChat').on("submit", function (event) {
+                event.preventDefault();
+                $('#chat-user').attr("type", "hidden");
+                var messageJSON = {
+                    chat_user: $('#chat-user').val(),
+                    chat_message: $('#chat-input').val(),
+                    chat_foto: $('#chat-foto').val(),
+                };
+                websocket.send(JSON.stringify(messageJSON));
+                $(".chat-logs").stop().animate({scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);
+            });
+        });
+
+
+//------------------------------------------------------------------------------
+        $(function () {
+            var INDEX = 0;
+            $("#chat-submit").click(function (e) {
+                e.preventDefault();
+                var msg = $("#chat-input").val();
+                if (msg.trim() == '') {
+                    return false;
+                }
+                generate_message(msg, 'self');
+                var buttons = [
+                    {
+                        name: 'Existing User',
+                        value: 'existing'
+                    },
+                    {
+                        name: 'New User',
+                        value: 'new'
+                    }
+                ];
+                setTimeout(function () {
+                    generate_message(msg, 'user');
+                }, 1000)
+
+            })
+
+            $("#chat-circle").click(function () {
+                $("#chat-circle").toggle('scale');
+                $(".chat-box").toggle('scale');
+            })
+
+            $(".chat-box-toggle").click(function () {
+                $("#chat-circle").toggle('scale');
+                $(".chat-box").toggle('scale');
+            })
+
+        })
+        function play_audio() {
+            $(".my_audio").trigger('play');
+        }
+    </script>
+</head>
+<!-- page content -->
+<div class="">
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Perfil De Usuario <small>Reporte de Actividades</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="<?php echo $this->url('administracion/default', array('controller' => 'perfil', 'action' => 'perfilesUsuarios')) ?>"><i class="fa fa-users"></i> Usuarios</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                        <div class="profile_img">
+                            <div id="crop-avatar">
+                                <!-- Current avatar -->
+                                <div class="image view view-first">
+                                    <img class="img-responsive avatar-view" src="/public/img/profile/<?php
+                                    foreach ($this->usuario as $foto) {
+                                        echo $foto['usuarioOBJ']->getRutaFotoPerfil();
+                                    }
+                                    ?>" alt="Avatar">
+                                    <div class="mask">
+                                        <p>Foto de perfil</p>
+                                        <div class="tools tools-bottom">
+                                            <a href="#"><i class="fa fa-search-plus"data-target="#ampliarFoto"data-toggle="modal" title="Zoom"></i></a>
+                                            <a href="#"><i class="fa fa-pencil"  onclick="editFotoperfil(<?php echo $idUsuario; ?>)" title="Cambiar foto"></i></a>
+                                            <a href="#"><i class="fa fa-times"title="Eliminar foto"></i></a>
+                                        </div>
+                                    </div>                                        
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                        foreach ($this->usuario as $nombreUsuario) {
+                            echo '<h3>' . $nombreUsuario['clienteempleadoOBJ']->getnombre() . '</h3>';
+                        }
+                        ?>                       
+                        <ul class="list-unstyled user_data">
+                            <li><i class="fa fa-birthday-cake user-profile-icon"></i> <?php echo $dia . "/" . $mesNombre ?>
+                                <?php
+                                if (($dia >= 22 && $mes == 12) || ($dia <= 19 && $mes == 1)) {
+                                    echo '<img src="/public/img/signos/capricornio.png" width="15%" height="15%" title="Capricornio">';
+                                } else if (($dia >= 20 && $mes == 1) || ($dia <= 18 && $mes == 2)) {
+                                    echo '<img src="/public/img/signos/acuario.png"width="15%" height="15%" title="Acuario">';
+                                } else if (($dia >= 19 && $mes == 2) || ($dia <= 20 && $mes == 3)) {
+                                    echo '<img src="/public/img/signos/piscis.png"width="15%" height="15%" title="Piscis">';
+                                } else if (($dia >= 21 && $mes == 3) || ($dia <= 19 && $mes == 4)) {
+                                    echo '<img src="/public/img/signos/aries.png"width="15%" height="15%" title="Aries">';
+                                } else if (($dia >= 20 && $mes == 4) || ($dia <= 20 && $mes == 5)) {
+                                    echo '<img src="/public/img/signos/tauro.png"width="15%" height="15%" title="Tauro">';
+                                } else if (($dia >= 21 && $mes == 5) || ($dia <= 20 && $mes == 6)) {
+                                    echo '<img src="/public/img/signos/geminis.png"width="15%" height="15%" title="geminis">';
+                                } else if (($dia >= 21 && $mes == 6) || ($dia <= 22 && $mes == 7)) {
+                                    echo '<img src="/public/img/signos/cancer.png"width="15%" height="15%" title="Cancer">';
+                                } else if (($dia >= 23 && $mes == 7) || ($dia <= 22 && $mes == 8)) {
+                                    echo '<img src="/public/img/signos/leo.png"width="15%" height="15%" title="Leo">';
+                                } else if (($dia >= 23 && $mes == 8) || ($dia <= 22 && $mes == 9)) {
+                                    echo '<img src="/public/img/signos/virgo.png"width="15%" height="15%" title="Virgo">';
+                                } else if (($dia >= 23 && $mes == 9) || ($dia <= 22 && $mes == 10)) {
+                                    echo '<img src="/public/img/signos/libra.png"width="15%" height="15%" title="Libra">';
+                                } else if (($dia >= 23 && $mes == 10) || ($dia <= 21 && $mes == 11)) {
+                                    echo '<img src="/public/img/signos/escorpion.png"width="15%" height="15%" title="Escorpion">';
+                                } else if (($dia >= 22 && $mes == 11) || ($dia <= 21 && $mes == 12)) {
+                                    echo '<img src="/public/img/signos/sagitario.png"width="15%" height="15%" title="Sagitario">';
+                                }
+                                ?>
+                            </li>
+
+                            <li>
+                                <i class="fa fa-briefcase user-profile-icon"></i>
+                                <?php
+                                foreach ($this->usuario as $ocupacion) {
+                                    echo $ocupacion['clienteempleadoOBJ']->getOcupacion();
+                                }
+                                ?>
+                            </li>
+                            <li>
+                                <i class="<?php echo $iconoSex; ?>"></i>
+                                <?php
+                                foreach ($this->usuario as $sexo) {
+                                    echo $sexo['clienteempleadoOBJ']->getGenero();
+                                }
+                                ?>
+                            </li>
+
+                            <li class="m-top-xs">
+                                <i class="fa fa-external-link user-profile-icon"></i> 
+                                <?php
+                                foreach ($this->usuario as $correo) {
+                                    echo $correo['clienteempleadoOBJ']->getEmail();
+                                }
+                                ?>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-left panel_toolbox">
+                            <!-- Split button -->
+                            <div class="btn-group">
+                                <button type="button" onclick="editPerfil(<?php echo $idPerfil; ?>)" class="btn btn-success"><i class="fa fa-pencil-square-o"></i> Editar Mi Perfil</button>
+                                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="javascript:verCambiarcontrasena();"><i class="fa fa-user"></i> Cambiar Contraseña</a>
+                                    </li>              
+                                </ul>
+                            </div>
+                        </ul>
+                        <br />
+
+                    </div>
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+
+
+
+                        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                            <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Mensajes</a>
+                                </li>
+                                <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Progresos</a>
+                                </li>
+                                <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Perfil</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                                    <!-- start recent activity -->
+                                    <ul class="messages">
+                                        <li>
+                                            <img src="/public/img/profile/perfilHombre.png" class="avatar" alt="Avatar">
+                                            <div class="message_date">
+                                                <h3 class="date text-info">24</h3>
+                                                <p class="month">May</p>
+                                            </div>
+                                            <div class="message_wrapper">
+                                                <h4 class="heading">Desmond Davison</h4>
+                                                <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                <br />
+                                                <p class="url">
+                                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="/public/img/profile/perfilHombre.png" class="avatar" alt="Avatar">
+                                            <div class="message_date">
+                                                <h3 class="date text-error">21</h3>
+                                                <p class="month">May</p>
+                                            </div>
+                                            <div class="message_wrapper">
+                                                <h4 class="heading">Brian Michaels</h4>
+                                                <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                <br />
+                                                <p class="url">
+                                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                                    <a href="#" data-original-title="">Download</a>
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="/public/img/profile/perfilHombre.png" class="avatar" alt="Avatar">
+                                            <div class="message_date">
+                                                <h3 class="date text-info">24</h3>
+                                                <p class="month">May</p>
+                                            </div>
+                                            <div class="message_wrapper">
+                                                <h4 class="heading">Desmond Davison</h4>
+                                                <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                <br />
+                                                <p class="url">
+                                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+                                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                                </p>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <img src="/public/img/profile/perfilHombre.png" class="avatar" alt="Avatar">
+                                            <div class="message_date">
+                                                <h3 class="date text-error">21</h3>
+                                                <p class="month">May</p>
+                                            </div>
+                                            <div class="message_wrapper">
+                                                <h4 class="heading">Brian Michaels</h4>
+                                                <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                                <br />
+                                                <p class="url">
+                                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
+                                                    <a href="#" data-original-title="">Download</a>
+                                                </p>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                    <!-- end recent activity -->
+
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+
+                                    <!-- start user projects -->
+                                    <table class="data table table-striped no-margin">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Project Name</th>
+                                                <th>Client Company</th>
+                                                <th class="hidden-phone">Hours Spent</th>
+                                                <th>Contribution</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>New Company Takeover Review</td>
+                                                <td>Deveint Inc</td>
+                                                <td class="hidden-phone">18</td>
+                                                <td class="vertical-align-mid">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success" data-transitiongoal="35"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>New Partner Contracts Consultanci</td>
+                                                <td>Deveint Inc</td>
+                                                <td class="hidden-phone">13</td>
+                                                <td class="vertical-align-mid">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-danger" data-transitiongoal="15"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Partners and Inverstors report</td>
+                                                <td>Deveint Inc</td>
+                                                <td class="hidden-phone">30</td>
+                                                <td class="vertical-align-mid">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success" data-transitiongoal="45"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>New Company Takeover Review</td>
+                                                <td>Deveint Inc</td>
+                                                <td class="hidden-phone">28</td>
+                                                <td class="vertical-align-mid">
+                                                    <div class="progress">
+                                                        <div class="progress-bar progress-bar-success" data-transitiongoal="75"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- end user projects -->
+
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                    <p>Juan es veterinario y por su puesto su amor por los animales es lo que más se destaca él. Tiene 30 años y mide 1.80 aproximadamente. Le gusta el rock y en sus ratos libres se dedica a tocar la guitarra eléctrica con un grupo de amigos de la infancia. Posee un carácter fuerte y es un poco testarudo, aunque tiene un gran corazón. Es una persona en la que se puede sin suda confiar y si tuviera que pedir ayuda, no dudaría en acudir a él. Tiene una familia hermosa compuesta por su esposa y tres hijos que lo acompañan en todos sus proyectos y lo incentivan a seguir creciendo a nivel personal y profesional.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page content -->
+
+<!--modal Iditar Perfil-->
+<div class="modal fade" id="modalFormulario" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Formulario</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 10px" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content" id="divContenido"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <b>POPGYM &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Ampliar Foto-->
+<div class="modal fade" id="ampliarFoto" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Mi FOTO DE PERFIL</h4>
+            </div>
+            <div class="modal-body">
+                <img src="/public/img/profile/<?php
+                foreach ($this->usuario as $foto) {
+                    echo $foto['usuarioOBJ']->getRutaFotoPerfil();
+                }
+                ?>" height="100%" width="100%">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="msgBloqueo" style="display: none;"> 
+    SU SOLICITUD ESTA SIENDO PROCESADA, POR FAVOR ESPERE...
+</div>
+
+
+
+
+<!DOCTYPE HTML>
+
+<head>
+    <script src="jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+
+    <link rel="stylesheet" href="chat.css" >
+
+    <script type="text/javascript">
+        var ws;
+        function IniciarConexion() {
+            ws = new WebSocket("ws://achex.ca:4010");
+            ws.onopen = function () {
+
+                ws.send('{"setID":"MichatRoom","passwd":"12345"}');
+            }
+            ws.onmessage = function (Mensajes) {
+                var MensajesObtenidos = Mensajes.data;
+                var objeto = jQuery.parseJSON(MensajesObtenidos);
+
+                if ((objeto.ContenidoM != null) && (objeto.NombreU != null)) {
+                    // copiar el item del chat y anexarlo al chat
+
+                    $("#plantilla").clone().appendTo(".chat");
+                    $('.chat #plantilla').show(10);
+                    $('.chat #plantilla .Nombre').html(objeto.NombreU);
+                    $('.chat #plantilla .Mensaje').html(objeto.ContenidoM);
+
+                    var formattedDate = new Date();
+                    var d = formattedDate.getUTCDate();
+                    var m = formattedDate.getMonth();
+                    var y = formattedDate.getFullYear();
+                    var h = formattedDate.getHours();
+                    var min = formattedDate.getMinutes();
+
+                    Fecha = d + "/" + m + "/" + y + " " + h + ":" + min;
+
+                    $('.chat #plantilla .Tiempo').html(Fecha);
+                    $('.chat #plantilla').attr("id", "");
+
+
+                }
+
+
+
+            }
+            ws.onclose = function () {
+                alert("Conexión Cerrada");
+            }
+        }
+        IniciarConexion();
+
+    </script>
+    
+   
+</head>
+
+<audio class="my_audio">
+    <source src="/public/sonido/mensaje.mp3" type="audio/mpeg">
+</audio>
+
+<div id="body">            
+    <div id="chat-circle" class="btn btn-raised">
+        <div id="chat-overlay"></div>
+        <i class="fa fa-send"></i>
+    </div>
+
+    <div class="chat-box">
+        <div class="chat-box-header">
+            ChatBot
+            <span class="chat-box-toggle"><i class="fa fa-close"></i></span>
+        </div>
+        <div class="chat-box-body">
+            <div class="chat-box-overlay">   
+            </div>
+            <div class="chat-logs">
+                <div class="panel-body">
+                    <ul class="chat"> </ul>
+                </div>
+            </div><!--chat-log -->
+        </div>
+        <div class="panel-footer">
+            <div class="input-group">
+                <input id="Mensaje" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                <span class="input-group-btn">
+                    <button class="btn btn-warning btn-sm" id="btnEnviar">
+                        <i class="fa fa-send"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<li style="display:none" id="plantilla" class="left clearfix">
+    <div id="cm-msg-1" class="chat-msg self" style="display: block;">          
+        <span class="msg-avatar">            
+            <img src="http://placehold.it/50/55C1E7/fff&text=U">         
+        </span>          
+        <div class="cm-msg-text"><small class="primary-font Nombre"></small><p class="Mensaje">
+                Mensaje
+            </p>
+            <small class="glyphicon glyphicon-asterisk Tiempo"></small>
+        </div>        
+    </div>
+    <script type="text/javascript">play_audio();</script>
+</li>
+
+
+
+<script>
+    var Nombre = '<?php echo $nombreU; ?>';
+
+    $('#btnEnviar').click(function () {
+        play_audio();
+        ws.send('{"to":"MichatRoom","NombreU":"' + Nombre + '","ContenidoM":"' + $('#Mensaje').val() + '"}');
+        $('#Mensaje').val("");
+    });
+</script>

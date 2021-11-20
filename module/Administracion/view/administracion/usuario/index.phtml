@@ -1,0 +1,285 @@
+<?php
+//--------- CARGAR MENSAJES DE ALERTA ------------------------------------------
+//$formBusquedas = $this->formBusquedas;
+$flash = $this->flashMessenger();
+$notificaciones = [
+    'success' => array_merge($flash->getSuccessMessages(), $flash->getCurrentSuccessMessages()),
+    'error' => array_merge($flash->getErrorMessages(), $flash->getCurrentErrorMessages()),
+    'alert' => array_merge($flash->getMessages(), $flash->getCurrentMessages()),
+    'information' => array_merge($flash->getInfoMessages(), $flash->getCurrentInfoMessages()),
+    'warning' => array_merge($flash->getWarningMessages(), $flash->getCurrentWarningMessages()),
+];
+$flash->clearCurrentMessages('default');
+$flash->clearCurrentMessages('info');
+$flash->clearCurrentMessages('success');
+$flash->clearCurrentMessages('warning');
+$flash->clearCurrentMessages('error');
+$mostrarMensajes = '';
+foreach (array_filter($notificaciones) as $tipo => $mensajes) {
+    switch ($tipo) {
+        case 'success': $tipoAux = '[ OK ]';
+            break;
+        case 'error': $tipoAux = '[ ERROR ]';
+            break;
+        case 'alert': $tipoAux = '[ ALERTA ]';
+            break;
+        case 'information': $tipoAux = '[ INFORMACION ]';
+            break;
+        case 'warning': $tipoAux = '[ PRECAUCION ]';
+            break;
+    }
+    foreach ($mensajes as $mensaje) {
+        $mostrarMensajes .= '$.notify({
+                                    title: "<b>' . $tipoAux . ' -- </b>",
+                                    message: "<span style=\'font-size: 90%\'>' . $mensaje . '</span>"
+                                },{
+                                    type: "' . $tipo . '"
+                                });';
+    }
+}
+//------------------------------------------------------------------------------
+
+$title = 'Usuarios';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath('vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/animate.css/animate.min.css'))
+        ->prependStylesheet($this->basePath('css/sweetalert2.min.css'))
+        ->prependStylesheet($this->basePath('vendors/iCheck/skins/flat/green.css'));
+
+$this->headScript()->prependScript('$(document).ajaxStop($.unblockUI); '
+                . '$(document).ready(function() {'
+                . '$("#tblUsuarios").DataTable({'
+                . 'responsive: true,'
+                . '"iDisplayLength": 25,
+                    "sPaginationType": "full_numbers",
+                    "oLanguage": {
+                        "sLengthMenu": "Mostrar: _MENU_ registros por pagina",
+                        "sZeroRecords": "NO SE HA ENCONTRADO INFORMACION",
+                        "sInfo": "Mostrando <b>_START_</b> a <b>_END_</b> registros <br>TOTAL REGISTROS: <b>_TOTAL_</b> Registros</b>",
+                        "sInfoEmpty": "Mostrando 0 A 0 registros",
+                        "sInfoFiltered": "(Filtrados de un total de <b>_MAX_</b> registros)",
+                        "sLoadingRecords": "CARGANDO...",
+                        "sProcessing": "EN PROCESO...",
+                        "sSearch": "Buscar:",
+                        "sEmptyTable": "NO HAY INFORMACION DISPONIBLE PARA LA TABLA",
+                        "oPaginate": {
+                            "sFirst": "Inicio",
+                            "sLast": "Fin",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        }
+                    },
+                    "aaSorting": [[0, "des"]]'
+                . '});'
+                . '//------------------------------------------------------------------------------
+                    // MANIPULACION DEL EVENTO DE CIERRE DEL MODAL
+                    //------------------------------------------------------------------------------
+                    $("#modalFormulario").on("hide.bs.modal", function (e) {
+                         return confirmarCerrar();
+                    });'
+                . $mostrarMensajes
+                . '});'
+                , 'text/javascript'
+                , array('noescape' => true))
+        ->prependFile($this->basePath('js/sistema/usuario.js'))
+        ->prependFile($this->basePath('js/jquery.blockUI.js'))
+        ->prependFile($this->basePath('js/bootstrap-notify.min.js'))
+        ->prependFile($this->basePath('vendors/iCheck/icheck.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-scroller/js/dataTables.scroller.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-responsive/js/dataTables.responsive.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'))
+        ->prependFile($this->basePath('vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'))
+        ->prependFile($this->basePath('vendors/pdfmake/build/pdfmake.min.js'))
+        ->prependFile($this->basePath('vendors/pdfmake/build/vfs_fonts.js'))
+        ->prependFile($this->basePath('js/SwtSistema.js'))
+        ->prependFile($this->basePath('js/sweetalert2.all.min2021.js'))
+        ->prependFile($this->basePath('vendors/datatables.net/js/jquery.dataTables.min.js'));
+?>
+
+<!-- top tiles -->
+<div class="row tile_count">
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-user"></i> Total Usuarios</span>
+        <?php
+        echo '<div class="count">' . $this->usuariosTotal . '</div>';
+        ?>
+        <span class="count_bottom"><i class="green">100% </i> En el sistema</span>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-user"></i> Total Hombres</span>
+        <?php
+        $this->usuariosTotal;
+        $this->HombresTotal;
+        $operH = ($this->HombresTotal * 100) / $this->usuariosTotal;
+        echo '<div class="count">' . $this->HombresTotal . '</div>';
+        if ($operH <= 25) {
+            echo '<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>';
+        } else
+            echo '<span class="count_bottom"><i class="green"><i class="fa fa-sort-desc"></i>';
+        echo $operH . '%';
+        echo '</i></span>';
+        ?>
+    </div>
+    <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+        <span class="count_top"><i class="fa fa-user"></i> Total Mujeres</span>
+        <?php
+        $this->usuariosTotal;
+        $this->MujeresTotal;
+        $operM = ($this->MujeresTotal * 100) / $this->usuariosTotal;
+        echo '<div class="count">' . $this->MujeresTotal . '</div>';
+        if ($operM <= 25) {
+            echo '<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>';
+        } else
+            echo '<span class="count_bottom"><i class="green"><i class="fa fa-sort-desc"></i>';
+        echo $operM . '%';
+        echo '</i></span>';
+        ?>
+    </div>
+</div>
+<!-- /top tiles -->
+<div class="clearfix"></div>
+<div class="row">
+    <hr>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Registros del Sistema <small>Usuarios</small></h2>
+                <ul class="nav navbar-right panel_toolbox">
+                          <!-- Split button -->
+                    <div class="btn-group">
+                        <button type="button" onclick="verAgregarUsuario()" class="btn btn-success"><i class="fa fa-plus"></i> Registrar Usuario</button>
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="javascript:verActivarUsuario()"><i class="fa fa-user"></i> Activar usuario</a>
+                            </li>                 
+                        </ul>
+                    </div>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <p class="text-muted font-13 m-b-30">
+                    A continuacion se listan todos los usuarios registrados en el sistema.
+                </p>
+                <table id="tblUsuarios" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRES</th>
+                            <th>IDENTIFICACION</th>
+                            <th>TIPO USUARIO</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($this->usuarios as $usuario) {
+                            echo '<tr>';
+                            echo '<td>' . $usuario['usuarioOBJ']->getPk_usuario_id() . '</td>';
+                            echo '<td>' . $usuario['usuarioOBJ']->getNombreApellido() . '</td>';
+                            echo '<td>' . $usuario['clienteempleadoOBJ']->getIdentificacion() . '</td>';
+                            echo '<td>' . $usuario['rolOBJ']->getRol() . '</td>';
+                            echo '<td>';
+                            echo '<a href="" onclick="verEditar(' . $usuario['usuarioOBJ']->getPk_usuario_id() . '); return false;" title="Editar este Usuario"><i class="fa fa-edit"></i></a>';
+                            echo '&nbsp;&nbsp;';
+                            echo '<a href="#" title="DETALLE" onclick="detalleUsuario(' . $usuario['usuarioOBJ']->getPk_usuario_id() . '); return false; "> <i class="fa fa-eye"> </i> </a>';
+                            echo '&nbsp;&nbsp;';
+                            echo '<a href="#" title="MEDIDAS" onclick="medidasUsuario(' . $usuario['usuarioOBJ']->getPk_usuario_id() . '); return false; "> <i class="fa fa-bar-chart"> </i> </a>';
+                            echo '&nbsp;&nbsp;';
+                            echo '<a href="#" title="HUELLAS" onclick="verHuella(' . $usuario['usuarioOBJ']->getPk_usuario_id() . '); return false; "> <i class="fa fa-paw"> </i> </a>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalFormulario" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow-y: scroll">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Formulario</h4>
+            </div>
+            <div class="modal-body">
+                <div style="padding: 10px" class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content" id="divContenido"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <b>SPARTANS &copy Copyright <?php echo date('Y/M/d'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="dlgDetalles" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <img src="/gimnasio/public/img/logo.png" style="width: 8%" alt="Gimnasio"/>
+                <h4 class="modal-title">SPARTANS</h4>
+            </div>
+            <div class="modal-body" >
+                <div id="divDetalle" class="row"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+            <div class="modal-footer">
+                <b>SPARTANS &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="dlgMedidas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <img src="/gimnasio/public/img/logo.png" style="width: 8%" alt="POPGYM"/>
+                <h4 class="modal-title">SPARTANS</h4>
+            </div>
+            <div class="modal-body" >
+                <div id="divMedidas" class="row"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+            <div class="modal-footer">
+                <b>SPARTANS &copy Copyright <?php echo date('Y'); ?></b>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="msgBloqueo" style="display: none;"> 
+    SU SOLICITUD ESTA SIENDO PROCESADA, POR FAVOR ESPERE <i class="fa fa-spinner fa-spin fa-lg"></i>
+</div>

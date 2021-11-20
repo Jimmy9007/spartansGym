@@ -1,0 +1,460 @@
+<?php
+$nombreUsuario = 'SESION NO INICIADA';
+$tipoUsuario = '2';
+$hiddenCliente = '';
+if ($sesionUsuario = $this->identity()) {
+    $tipoUsuario = $this->escapeHtml($sesionUsuario->fk_rol_id);
+    $sexo = $this->escapeHtml($sesionUsuario->genero);
+    $nombre = $this->escapeHtml($sesionUsuario->nombreApellido);
+    if ($sexo == 'Masculino') {
+        $ao = 'O';
+    } else {
+        $ao = 'A';
+    }
+    if ($tipoUsuario == '1') {
+        $AdministradorUsuario = '1';
+        $hiddenCliente = '';
+    } else {
+        $AdministradorUsuario = '2';
+        $hiddenCliente = 'hidden';
+    }
+}
+?>
+<head>      
+    <!-- FullCalendar -->
+    <link href="/gimnasio/public/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+    <link href="/gimnasio/public/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+    <!-- PNotify -->
+    <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/gimnasio/public/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="/gimnasio/public/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- animate -->
+    <link href="/gimnasio/public/vendors/animate.css/animate.css" rel="stylesheet">
+    <style>
+    .contenedor_loader{
+        top: 0;
+        left: 0;
+        background-color: #000000 !important;
+        color: #fff;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        clip-path: circle(150% at 100% 0);
+        transition: clip-path 1.8s ease-in-out;
+    }
+    .contenedor_loader2{
+        clip-path: circle(0% at 100% 0);
+    }
+    .logoInicio{
+        -webkit-animation: wobble 1500ms;
+        animation: wobble 1500ms;
+    }
+    </style>
+</head>
+<body onload="bienvenidoUsuario()">
+    <div class="contenedor_loader">
+        <img class="logoInicio" src="<?php echo $this->basePath('/img/logo.png'); ?>" alt="SPARTANS" height="100" width="100">
+    </div>
+    <div class="x_content">
+        <div class="" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab1" class="nav nav-tabs bar_tabs right" role="tablist">
+                <li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true"><i class="fa fa-home"></i> INICIO</a>
+                </li>
+                <li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false"><i class="fa fa-check-circle"></i> VALORES</a>
+                </li>
+                <li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb3" data-toggle="tab" aria-controls="clases" aria-expanded="false"><i class="fa fa-calendar"></i> FECHAS</a>
+                </li>
+            </ul>
+            <div id="myTabContent2" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">              
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <div ALIGN=center>
+                                    <div class="container">
+                                        <br>
+                                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                            <!-- Indicators -->
+                                            <ol class="carousel-indicators">
+                                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                                                <li data-target="#myCarousel" data-slide-to="3"></li>
+                                                <li data-target="#myCarousel" data-slide-to="4"></li>
+                                                <li data-target="#myCarousel" data-slide-to="5"></li>
+                                            </ol>
+
+                                            <!-- Wrapper for slides -->
+                                            <div class="carousel-inner" role="listbox">
+
+                                                <div class="item active">
+                                                    <img src="/gimnasio/public/img/spartans.jpg" style="width: 50%" height="50%" alt="Gimnasio"/> <br><br>
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>Cuanto más sudas en el entrenamiento, menos sangras en combate.</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item">
+                                                    <img src="/gimnasio/public/img/spartans1.jpg" alt="Gimnasio2" width="50%" height="50%">
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>Cuanto más sudas en el entrenamiento, menos sangras en combate.</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item">
+                                                    <img src="/gimnasio/public/img/spartans3.jpg" alt="Flower" width="50%" height="50%">
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>La pasión triunfa sobre todo.</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="item">
+                                                    <img src="/gimnasio/public/img/gimnasio3.jpg" alt="Flower" width="50%" height="50%">
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>Cuida de tu cuerpo. Es el único lugar que tienes para vivir.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <img src="/gimnasio/public/img/logoGym.jpg" alt="Flower" width="50%" height="50%">
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>Siempre parece imposible hasta que se hace.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <img src="/gimnasio/public/img/gimnasio2.jpg" alt="Flower" width="50%" height="50%">
+                                                    <div class="carousel-caption">
+                                                        <h3>Gym</h3>
+                                                        <p>Siempre parece imposible hasta que se hace.</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <!-- Left and right controls -->
+                                            <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <p>GIMNASIO</p>
+                                    <p>&copy;2016 Todos los derechos reservados.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <ul class="list-unstyled timeline">
+                                    <li>
+                                        <div class="block">
+                                            <div class="tags">
+                                                <a href="" class="tag">
+                                                    <span>MISIÓN</span>
+                                                </a>
+                                            </div>
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>MISIÓN</a>
+                                                </h2>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Contribuir al desarrollo integral de los clientes mediante el diseño y la aplicación de un conjunto de servicios que fortalezcan la salud física y mental.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Ayudar a nuestros socios a crear y mantener una excelente condición física a través de la nutrición y programas de entrenamiento.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Inculcar en niños, jóvenes y adultos, el valor de la salud y el ejercicio.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Mejorar la calidad de vida de las comunidades a través de la filosofía del ejercicio, programas y productos de nutrición.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Participar proactivamente en el bienestar de las personas en su entorno social y laboral.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Brindar un servicio único y facilitar las herramientas del éxito.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="block">
+                                            <div class="tags">
+                                                <a href="" class="tag">
+                                                    <span>VISIÓN</span>
+                                                </a>
+                                            </div>
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>VISIÓN</a>
+                                                </h2>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Ser un gimnasio líder, brindando calidad y bienestar a nuestros miembros, generando valor humano y profesional a nuestra empresa, a nuestros colaboradores y a nuestra comunidad.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Ser la mejor opción deportiva en la ciudad de <b>Popayán</b>, por la excelencia en los servicios y la moderna aparatología, potenciando los procesos de servicio al cliente y la atención personalizada.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Ofrecer un ambiente ameno, accesible, práctico y estimulante, en el que todo socio pueda expresar su competencia física, mental y espiritual.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Optimizar los objetivos de captación y retención de socios, garantizando calidad y resultados tangibles.
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Promover la integración familiar por medio de las actividades deportivas en un clima sano, alegre y positivo.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="block">
+                                            <div class="tags">
+                                                <a href="" class="tag">
+                                                    <span>VALORES</span>
+                                                </a>
+                                            </div>
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>VALORES</a>
+                                                </h2>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Apego a la filosofía de la salud y el bienestar
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Profesionalismo
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Eficacia en el logro de los objetivos
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Eficacia en el uso de los recursos
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Excelencia en servicios
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Compromiso social
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Compromiso ambiental
+                                                </p>
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Comportamiento ético y moral
+                                                </p>  
+                                                <p class="excerpt"><i class="fa fa-check-circle"></i>Respeto a la integridad de nuestros usuarios, empleados y proveedores.
+                                                </p>  
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">                
+                    <!--contenido-->
+                    <!-- page content -->
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <div class="container">
+
+                                    <div class="row">
+                                        <div class="col-sm-0"></div>
+                                        <div class="col-sm-12"><div id='calendar'></div></div>
+                                        <div class="col-sm-0"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /page content -->       
+
+                    <!-- Modal Evento-->
+                    <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="tituloEvento">Nuevo Evento</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">  
+                                    <div class="x_content" id="divContenido"></div>
+                                </div>
+                                <div class="modal-footer">   
+                                    <div class="clearfix"></div>
+                                    <fieldset <?php echo $hiddenCliente; ?>>
+                                        <button type="button"id="btnEliminarEvento"class="btn btn-danger"><i class="fa fa-trash"></i> BORRAR</button>                                
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                    <!-- //Modal Evento-->
+                </div>  
+
+            </div>
+        </div>
+
+        <!-- top tiles -->
+        <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> Total Usuarios</span>
+                <?php
+                echo '<div class="count">' . $this->usuariosTotal . '</div>';
+                ?>
+                <span class="count_bottom"><i class="green">100% </i> En el sistema</span>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> Total Hombres</span>
+                <?php
+                $this->usuariosTotal;
+                $this->HombresTotal;
+                $operH = ($this->HombresTotal * 100) / $this->usuariosTotal;
+                echo '<div class="count">' . $this->HombresTotal . '</div>';
+                if ($operH <= 25) {
+                    echo '<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>';
+                } else
+                    echo '<span class="count_bottom"><i class="green"><i class="fa fa-sort-desc"></i>';
+                echo $operH . '%';
+                echo '</i></span>';
+                ?>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <span class="count_top"><i class="fa fa-user"></i> Total Mujeres</span>
+                <?php
+                $this->usuariosTotal;
+                $this->MujeresTotal;
+                $operM = ($this->MujeresTotal * 100) / $this->usuariosTotal;
+                echo '<div class="count">' . $this->MujeresTotal . '</div>';
+                if ($operM <= 25) {
+                    echo '<span class="count_bottom"><i class="red"><i class="fa fa-sort-desc"></i>';
+                } else
+                    echo '<span class="count_bottom"><i class="green"><i class="fa fa-sort-desc"></i>';
+                echo $operM . '%';
+                echo '</i></span>';
+                ?>
+            </div>
+        </div>
+        <!-- /top tiles -->
+    </div>
+</body>
+<script>
+//------------------------Cargar pagina-----------------------------------------
+    window.addEventListener('load', () => {
+        const contenedor_loader = document.querySelector('.contenedor_loader').classList.toggle("contenedor_loader2");
+    });
+//------------------------------------------------------------------------------
+    $(document).ready(function () {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'today,prev,next',
+                center: 'title',
+                right: 'month,basickWeek,basickDay,agendaWeek,agendaDay,listMonth'
+            },
+            dayClick: function (date, jsEvent, view) {
+                $('#CalenderModalNew').modal();
+                guardarEvento();
+            },
+            events: [
+
+<?php
+foreach ($this->evento as $evento) {
+    echo "{";
+    echo "pk_evento_id:'" . $evento->getPk_evento_id() . "',";
+    echo "title:'" . $evento->getTitle() . "',";
+    echo "descripcion:'" . $evento->getDescripcion() . "',";
+    echo "start:'" . $evento->getStart() . "',";
+    echo "color:'" . $evento->getColor() . "',";
+    echo "textColor:'" . $evento->getTextColor() . "',";
+    echo "end:'" . $evento->getEnd() . "',";
+    echo "},";
+}
+foreach ($this->usuarioCumple as $usuario) {
+    $dia = date("d", strtotime($usuario->getFechaNacimiento()));
+    $mes = date("m", strtotime($usuario->getFechaNacimiento()));
+    $ano = date("Y");
+    echo "{";
+    echo "pk_usuario_id:'" . $usuario->getPk_clienteempleado_id() . "',";
+    echo "title:'🎂 " . $usuario->getNombre() . "" . $usuario->getApellido() . "',";
+    echo "descripcion:'Fiesta De Cunpleaños',";
+    echo "start:'" . $ano . $mes . $dia . "',";
+    echo "color:'#FAA',";
+    echo "textColor:'#000000',";
+    echo "end:'" . $ano . $mes . $dia . "',";
+    echo "allDay: 1},";
+}
+?>
+
+            ],
+            eventClick: function (calEvent, jsEvent, view, date) {
+                $('#CalenderModalNew').modal();
+                $('#tituloEvento').html(calEvent.start.format() + " - " + calEvent.end.format());
+                var id = calEvent.pk_evento_id;
+                var idUser = calEvent.pk_usuario_id;
+                editarEvento(id, idUser);
+                $('#btnEliminarEvento').click(function () {
+                    borrarEvento(id);
+                });
+            },
+            editable: true,
+            eventDrop: function (calEvent) {
+                var id = calEvent.pk_evento_id;
+                var titulo = calEvent.title;
+                var des = calEvent.descripcion;
+                var fStart = calEvent.start.format();
+                var cColor = calEvent.color;
+                var tColor = calEvent.textColor;
+                var fEnd = calEvent.end.format();
+                alert(calEvent.title + "; se movio evento a: " + calEvent.start.format());
+                moverEvento(id, fStart, fEnd, titulo, des, cColor, tColor);
+            },
+        });
+    });
+    function bienvenidoUsuario() {
+        new PNotify({
+            title: 'BIENVENID<?php echo $ao; ?>',
+            text: '<?php echo $nombre; ?>',
+            type: 'info',
+            styling: 'bootstrap3'
+        });
+    }
+</script>
+<!-- FullCalendar -->
+<script src="/gimnasio/public/js/fullCalendar/moment.min.js"></script>
+<script src="/gimnasio/public/js/fullCalendar/fullcalendar.min.js"></script>
+<script src="/gimnasio/public/js/fullCalendar/es.js"></script>
+<!-- Custom Theme Scripts -->
+<script src="/gimnasio/public/js/sistema/index.js"></script>
+
+
+<!-- PNotify -->
+<script src="/gimnasio/public/vendors/pnotify/dist/pnotify.js"></script>
+<script src="/gimnasio/public/vendors/pnotify/dist/pnotify.buttons.js"></script>
+<script src="/gimnasio/public/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+<!-- NProgress -->
+<script src="/gimnasio/public/vendors/nprogress/nprogress.js"></script>
+<!-- jQuery Sparklines -->
+<script src="/gimnasio/public/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+<!-- Flot -->
+<script src="/gimnasio/public/vendors/Flot/jquery.flot.js"></script>
+<script src="/gimnasio/public/vendors/Flot/jquery.flot.pie.js"></script>
+<script src="/gimnasio/public/vendors/Flot/jquery.flot.time.js"></script>
+<script src="/gimnasio/public/vendors/Flot/jquery.flot.stack.js"></script>
+<script src="/gimnasio/public/vendors/Flot/jquery.flot.resize.js"></script>
+<!-- Flot plugins -->
+<script src="/gimnasio/public/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+<script src="/gimnasio/public/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+<script src="/gimnasio/public/vendors/flot.curvedlines/curvedLines.js"></script>
+<!-- DateJS -->
+<script src="/gimnasio/public/vendors/DateJS/build/date.js"></script>
+<!-- bootstrap-daterangepicker -->
+<script src="/gimnasio/public/vendors/moment/min/moment.min.js"></script>
+<script src="/gimnasio/public/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>

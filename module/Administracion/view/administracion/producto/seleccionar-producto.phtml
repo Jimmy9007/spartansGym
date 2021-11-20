@@ -1,0 +1,43 @@
+<p class="text-muted font-13 m-b-30">
+    A continuacion se listan todas los productos registradas en el sistema para su venta.
+</p><br>
+<div style="overflow: scroll">
+    <table id="tblProductos" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>DESCRIPCION</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th></th>
+            </tr>
+        </thead>
+           <tbody>
+            <?php
+            foreach ($this->productos as $producto) {
+                $hidden = '';
+                $estiloCantidad = '';
+                if ($producto->getCantidad() <= 0) {
+                    $hidden = 'hidden';
+                    $estiloCantidad = 'style="background: #FAA"'; //Rojo
+                } elseif ($producto->getCantidad() <= 3 && $producto->getCantidad() > 0) {
+                    $estiloCantidad = 'style="background: #FFA"'; //Amarillo
+                } else {
+                    $estiloCantidad = 'style="background: #AFA"'; //verde
+                }
+                echo '<tr>';
+                echo '<td>' . $producto->getPk_producto_id() . '</td>';
+                echo '<td>' . $producto->getNombreProducto() . '</td>';
+                echo '<td>' . $producto->getDescripcion() . '</td>';
+                echo '<td ' . $estiloCantidad . '>' . $producto->getCantidad() . '</td>';
+                echo '<td>$' . number_format($producto->getPrecioVenta()) . '</td>';
+                echo '<td>';
+                echo '<a href="" onclick="selectProducto(' . $producto->getPk_producto_id() . '); return false;" title="Seleccionar este Producto"' . $hidden . '><i class="fa fa-check"></i></a>';
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+</div>

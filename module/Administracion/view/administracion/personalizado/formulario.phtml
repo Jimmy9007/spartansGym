@@ -1,0 +1,107 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+?>
+<fieldset>
+    <div class="form-group">
+        <a class="btn btn-primary" onclick="seleccionarUsuario()"><span class="fa fa-search"></span> Buscar Usuario</a>
+    </div>
+    <div id="divInfoUsuario" hidden></div>
+</fieldset>
+<fieldset>    
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fechaPersonalizado">Fecha <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('fechaPersonalizado')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="valorPersonalizado">Valor <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('valorPersonalizado')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="direccionPersonalizado">Direccion <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('direccionPersonalizado')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">Instructor</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('fk_usuario_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">       
+        <div class="row">
+            <div id="divMapa" class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">                            
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link" onclick="abrirMapa();
+                                        return false;"><i class="fa fa-chevron-up"></i></a>
+                                </li>                              
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <div hidden id="map_canvas" style="width: 100%; height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">            
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                <?php echo $this->formRow($form->get('latitud')); ?>
+                <span class="fa fa-map-marker form-control-feedback left" aria-hidden="true"></span>
+            </div> 
+            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                <?php echo $this->formRow($form->get('longitud')); ?>
+                <span class="fa fa-map-marker form-control-feedback right" aria-hidden="true"></span>
+            </div>        
+        </div>
+        <div class="row">
+            <div class="control-label col-md-12 col-sm-12 col-xs-12">
+                <a href="#" id="actionMap" class="cerrado" onclick="abrirMapa();
+                        return false;" style="color: #d98e3d;">                    
+                    <div id="txtImgMaps">Abrir Google Maps</div>
+                </a>
+                <a href="#" onclick="limpiarCoordenadas();
+                        return false;" style="color: #d98e3d;">Limpiar Coordenadas</a>
+            </div> 
+        </div> 
+    </div>
+</fieldset>
+<fieldset >
+    <legend>Informacion de Registro</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_personalizado_id">ID Personalizado</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('pk_personalizado_id')); ?>
+        </div>
+    </div>
+</fieldset>
+
+<div class="ln_solid"></div>
+<div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <?php
+        if ($action != 'buscar') {
+            echo $this->formRow($form->get('btnCancelar'));
+        }
+        if ($action != 'detail' && $action != 'buscar') {
+            echo $this->formSubmit($form->get('btnEnviar'));
+        }
+        ?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag(); ?>

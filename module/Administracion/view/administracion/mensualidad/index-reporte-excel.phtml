@@ -1,0 +1,92 @@
+<?php
+$title = 'Reporte ';
+$this->headTitle($title);
+$this->headLink()->prependStylesheet($this->basePath('vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('vendors/iCheck/skins/flat/green.css'));
+
+$this->headScript()->prependScript('$(document).ready(function() {'
+                . '$("#tblMensualidades").DataTable({'
+                . 'responsive: true,'
+                . '"iDisplayLength": 25,
+                    "sPaginationType": "full_numbers",
+                    "oLanguage": {
+                        "sLengthMenu": "Mostrar: _MENU_ registros por pagina",
+                        "sZeroRecords": "NO SE HA ENCONTRADO INFORMACION",
+                        "sInfo": "Mostrando <b>_START_</b> a <b>_END_</b> registros <br>TOTAL REGISTROS: <b>_TOTAL_</b> Registros</b>",
+                        "sInfoEmpty": "Mostrando 0 A 0 registros",
+                        "sInfoFiltered": "(Filtrados de un total de <b>_MAX_</b> registros)",
+                        "sLoadingRecords": "CARGANDO...",
+                        "sProcessing": "EN PROCESO...",
+                        "sSearch": "Buscar:",
+                        "sEmptyTable": "NO HAY INFORMACION DISPONIBLE PARA LA TABLA",
+                        "oPaginate": {
+                            "sFirst": "Inicio",
+                            "sLast": "Fin",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        }
+                    },
+                    "aaSorting": [[0, "des"]]'
+                . '});'
+                . '});'
+                , 'text/javascript'
+                , array('noescape' => true))
+        ->prependFile('/public/js/sistema/reportes.js')
+        ->prependFile('/public/vendors/iCheck/icheck.min.js')
+        ->prependFile('/public/vendors/datatables.net-scroller/js/dataTables.scroller.min.js')
+        ->prependFile('/public/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js')
+        ->prependFile('/public/vendors/datatables.net-responsive/js/dataTables.responsive.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/dataTables.buttons.min.js')
+        ->prependFile('/public/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/buttons.html5.min.js')
+        ->prependFile('/public/vendors/datatables.net-buttons/js/buttons.print.min.js')
+        ->prependFile('/public/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js')
+        ->prependFile('/public/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js')
+        ->prependFile('/public/vendors/pdfmake/build/pdfmake.min.js')
+        ->prependFile('/public/vendors/pdfmake/build/vfs_fonts.js')
+        ->prependFile('/public/vendors/datatables.net/js/jquery.dataTables.min.js');
+$formSalida = $this->formSalida;
+echo $this->form()->openTag($formSalida);
+?>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header" style="color: #d98e3d; text-shadow: 1px 1px #efc614">REPORTES EN EXEL <img src="/public/img/iconos/excel.png"width="50" height="50"></h1>
+    </div>
+</div>
+<fieldset>
+    <p class="text-muted font-13 m-b-30">
+        A continuacion se pueden descargar los reportes en excel como son: Mensualidades, Ventas y Entrenos.
+    </p>
+</fieldset>
+<div class="form-group"> 
+    <div class="col-xs-2 col-md-2">
+        <div class="form-group">
+            <?php echo $this->formRow($formSalida->get('tipo_reporte')); ?>
+        </div>
+    </div>        
+    <div class="row">
+        <div class="col-xs-2 col-md-2">
+            <div class="form-group">                              
+                <?php echo $this->formRow($formSalida->get('fechaInicio')); ?>
+            </div>
+        </div>        
+        <div class="col-xs-2 col-md-2">
+            <div class="form-group">                                
+                <?php echo $this->formRow($formSalida->get('fechaFin')); ?>
+            </div>
+        </div>     
+        <div class="col-xs-4 col-md-4">
+            <div class="form-group">            
+                <br>
+                <button  type="button" class="btn btn-primary" name="botonFecha" id="botonFecha" onclick="downloadReporte()" value="Descargar" >Descargar &nbsp; <i class="fa fa-download" aria-hidden="true"></i> </button>
+            </div>
+        </div>        
+    </div>        
+</div>   
+
+<div class="row"></div>

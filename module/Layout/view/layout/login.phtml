@@ -1,0 +1,146 @@
+<?php
+//--------- CARGAR MENSAJES DE ALERTA ------------------------------------------
+$flash = $this->flashMessenger();
+$notificaciones = [
+    'success' => array_merge($flash->getSuccessMessages(), $flash->getCurrentSuccessMessages()),
+    'error' => array_merge($flash->getErrorMessages(), $flash->getCurrentErrorMessages()),
+    'alert' => array_merge($flash->getMessages(), $flash->getCurrentMessages()),
+    'information' => array_merge($flash->getInfoMessages(), $flash->getCurrentInfoMessages()),
+    'warning' => array_merge($flash->getWarningMessages(), $flash->getCurrentWarningMessages()),
+];
+$flash->clearCurrentMessages('default');
+$flash->clearCurrentMessages('info');
+$flash->clearCurrentMessages('success');
+$flash->clearCurrentMessages('warning');
+$flash->clearCurrentMessages('error');
+$mensaje = 'SPARTANS';
+$tipo = 'info';
+foreach (array_filter($notificaciones) as $tipo => $mensajes) {
+    foreach ($mensajes as $mensaje) {
+        
+    }
+}
+//------------------------------------------------------------------------------
+?>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>SPARTANS :: Inicio de Sesion</title>
+
+        <link href="/gimnasio/public/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+        <link href="/gimnasio/public/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- NProgress -->
+        <link href="/gimnasio/public/vendors/nprogress/nprogress.css" rel="stylesheet">
+        <!-- Animate.css -->
+        <link href="/gimnasio/public/vendors/animate.css/animate.min.css" rel="stylesheet">
+        <!-- PNotify -->
+        <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+        <!-- Datatables -->
+        <link href="/gimnasio/public/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+        <link href="/gimnasio/public/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+        <!-- Custom Theme Style -->
+        <link href="/gimnasio/public/build/css/custom.min.css" rel="stylesheet">
+        <style>
+            .top_nav {
+                width: 100%;
+                position: fixed;
+                z-index: 100;
+            }
+            #hero{
+                background-image: url(<?php echo $this->basePath('img/gimnasio4.jpg') ?>);
+                background-size: cover;
+                padding-top: 90px;
+                min-height: 400px;
+                color: #ffffff;
+            }
+        </style>  
+    </head>
+    <body style="background: url(<?php echo $this->basePath('img/logoGym.jpg') ?>) center center no-repeat fixed; background-size: cover" onload="bienvenidoUsuario()">
+        <?php echo $this->header2; ?>  
+        <?php echo $this->content; ?>
+        <?php echo $this->footer2; ?>
+        <script src="/gimnasio/public/js/sistema/login.js"></script>
+        <!-- jQuery -->
+        <script src="/gimnasio/public/vendors/jquery/dist/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="/gimnasio/public/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- FastClick -->
+        <script src="/gimnasio/public/vendors/fastclick/lib/fastclick.js"></script>
+        <!-- NProgress -->
+        <script src="/gimnasio/public/vendors/nprogress/nprogress.js"></script>
+        <!-- bootstrap-progressbar -->
+        <script src="/gimnasio/public/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+        <!-- iCheck -->
+        <script src="/gimnasio/public/vendors/iCheck/icheck.min.js"></script>
+        <!-- PNotify -->
+        <script src="/gimnasio/public/vendors/pnotify/dist/pnotify.js"></script>
+        <script src="/gimnasio/public/vendors/pnotify/dist/pnotify.buttons.js"></script>
+        <script src="/gimnasio/public/vendors/pnotify/dist/pnotify.nonblock.js"></script>  
+        <!-- Datatables -->
+        <script src="/gimnasio/public/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+        <script src="/gimnasio/public/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+        <script src="/gimnasio/public/vendors/jszip/dist/jszip.min.js"></script>
+        <script src="/gimnasio/public/vendors/pdfmake/build/pdfmake.min.js"></script>
+        <script src="/gimnasio/public/vendors/pdfmake/build/vfs_fonts.js"></script>
+        <script>
+                function bienvenidoUsuario() {
+                    new PNotify({
+                        title: '<?php echo "<span style=\'font-size: 90%\'>" . $mensaje . "</span>"; ?>',
+                        text: 'BIENVENIDO',
+                        type: '<?php echo $tipo; ?>',
+                        styling: 'bootstrap3'
+                    });
+                }
+                $(document).ajaxStop($.unblockUI);
+                $(document).ready(function () {
+                    $("#tblAsistencias").DataTable({
+                        responsive: true,
+                        "iDisplayLength": 25,
+                        "sPaginationType": "full_numbers",
+                        "oLanguage": {
+                            "sLengthMenu": "Mostrar: _MENU_ registros por pagina",
+                            "sZeroRecords": "NO SE HA ENCONTRADO INFORMACION",
+                            "sInfo": "Mostrando <b>_START_</b> a <b>_END_</b> registros <br>TOTAL REGISTROS: <b>_TOTAL_</b> Registros</b>",
+                            "sInfoEmpty": "Mostrando 0 A 0 registros",
+                            "sInfoFiltered": "(Filtrados de un total de <b>_MAX_</b> registros)",
+                            "sLoadingRecords": "CARGANDO...",
+                            "sProcessing": "EN PROCESO...",
+                            "sSearch": "Buscar:",
+                            "sEmptyTable": "NO HAY INFORMACION DISPONIBLE PARA LA TABLA",
+                            "oPaginate": {
+                                "sFirst": "Inicio",
+                                "sLast": "Fin",
+                                "sNext": "Siguiente",
+                                "sPrevious": "Anterior"
+                            }
+                        },
+                        "aaSorting": [[0, "des"]]
+                    });
+                });
+        </script>
+    </body>
+</html>    
+
+

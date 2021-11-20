@@ -1,0 +1,67 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+?>
+<p class="text-muted font-13 m-b-30">
+    A continuacion se listan todos los usuarios registrados en el sistema.
+</p><br>
+<div style="overflow: scroll">
+    <table id="tblUsuarios" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>IDENTIFICACION</th>
+                <th>NOMBRES</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            foreach ($this->usuarios as $usuarios) {
+                echo '<tr>';
+                echo '<td>' . $usuarios['clienteempleadoOBJ']->getIdentificacion() . '</td>';
+                echo '<td>' . $usuarios['usuarioOBJ']->getNombreApellido() . '</td>';
+                echo '<td>';
+                echo '<button type = "submit" onclick = "selectUsuario(' . $usuarios['usuarioOBJ']->getPk_usuario_id() . ');" class = "btn btn-success">OK</button>';
+                echo '</td>';
+                echo '</tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+<fieldset <?php echo $hiddenInfoRegistro; ?>>
+    <legend>Informacion de Registro</legend>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_asistencia_id">ID<span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('pk_asistencia_id')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="fk_usuario_id">Cliente<span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('fk_usuario_id')); ?>
+        </div>
+    </div>
+</fieldset>
+
+<div class="ln_solid"></div>
+<div class="form-group">
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">        
+        <?php
+        if ($action != 'buscar') {
+            echo $this->formRow($form->get('btnCancelar'));
+        }
+        if ($action != 'detail' && $action != 'buscar') {
+//            echo $this->formSubmit($form->get('btnEnviar'));
+        }
+        ?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag(); ?>

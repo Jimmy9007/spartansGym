@@ -1,0 +1,86 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$hiddenInfoRegistro = '';
+$action = $form->getAttribute('action');
+if ($action == 'add') {
+    $hiddenInfoRegistro = 'hidden';
+}
+echo $this->form()->openTag($form);
+$tipoUsuario = '';
+$hiddenCliente = '';
+if ($sesionUsuario = $this->identity()) {
+    $tipoUsuario = $this->escapeHtml($sesionUsuario->fk_rol_id);
+    if ($tipoUsuario == '2') {
+        $hiddenCliente = 'hidden';
+    } else {
+        $hiddenCliente = '';
+    }
+}
+?>
+<fieldset>   
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title">Titulo <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('title')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="descripcion">Descripcion <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('descripcion')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="color">Color <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('color')); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="textColor">Color texto <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('textColor')); ?>
+        </div>
+    </div>
+    <div class="form-group">    
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="start">Empieza <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <!--<div class="input-group clockpicker" data-autoclose="true">-->
+            <?php echo $this->formRow($form->get('start')); ?>
+            <!--</div>-->
+        </div>        
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="end">Termina <span class="required">*</span></label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('end')); ?>
+        </div>
+    </div>
+</fieldset>
+<fieldset>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pk_evento_id">ID</label>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <?php echo $this->formRow($form->get('pk_evento_id')); ?>
+        </div>
+    </div>
+</fieldset>
+<div class="ln_solid"></div>
+
+<div class="form-group" <?php echo $hiddenCliente; ?>>
+    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+        <?php
+        if ($action != 'buscar') {
+            echo $this->formRow($form->get('btnCancelar'));
+        }
+        if ($action != 'detail' && $action != 'buscar') {
+            echo $this->formSubmit($form->get('btnAgregarEvento'));
+        }
+        ?>
+    </div>
+</div>
+<?php echo $this->form()->closeTag(); ?>
+<script>
+    $('.clockpicker').clockpicker();
+</script>
